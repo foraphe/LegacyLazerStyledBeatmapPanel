@@ -1,0 +1,40 @@
+#outerPanel {
+    bottom: 10px;
+    width: 97vw;
+    right: 1.5vw;
+    transition: 800ms;
+    height: 50px;
+    position: absolute;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    background-color: rgba(128, 128, 128, 0.07);
+}
+
+#innerPanel {
+    width: 70vw;
+    position: relative;
+    left: 13.5vw;
+    height: inherit;
+}
+
+#beatmapInfo {
+    width: 40vw;
+    position: relative;
+    left: 15vw;
+    height: inherit;
+}
+
+.roundedBorder {
+    border-radius: 25px;
+}
+
+.textIndicator {
+    color: rgba(128, 128, 128, 0.67);
+}
+
+.textValue {
+    color: rgba(128, 128, 128, 0.5);
+}
+
+div {
+    display: flex;
+}
