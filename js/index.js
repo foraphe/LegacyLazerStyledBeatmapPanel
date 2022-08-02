@@ -19,6 +19,7 @@ let elementLength = document.getElementById('dataLength');
 let elementBG = document.getElementById('dataBeatmapInfo');
 let body = document.body;
 let elementSR = document.getElementById('dataSr');
+let elementBM = document.getElementById('dataBeatmap');
 
 let ar = 0,
     od = 0,
@@ -28,7 +29,8 @@ let ar = 0,
     diff = null,
     length = 0,
     bg = null,
-    sr = 0;
+    sr = 0,
+    bm = null;
 
 socket.onmessage = event => {
     let data = JSON.parse(event.data);
@@ -66,10 +68,15 @@ socket.onmessage = event => {
         diff = data.menu.bm.metadata.difficulty;
         elementDiff.innerText = data.menu.bm.metadata.difficulty;
     }
-    if (data.menu.bp.path.full != bg) {
-        bg = data.menu.bp.path.full;
-        elementBG.style.backgroundImage = `http://127.0.0.1:24050/Songs/${bg}?a=${Math.random(10000)}`;
-        body.style.backgroundImage = `http://127.0.0.1:24050/Songs/${bg}?a=${Math.random(10000)}`;
+    if (data.menu.bm.path.full != bg) {
+        bg = data.menu.bm.path.full;
+        elementBG.style.backgroundImage = `url(http://127.0.0.1:24050/Songs/${bg.replace(/#/g, "%23").replace(/%/g, "%25")}})`;
+        body.style.backgroundImage = `url(http://127.0.0.1:24050/Songs/${bg.replace(/#/g, "%23").replace(/%/g, "%25")}})`;
+        elementBG.style.backgroundColor = 'none';
+    }
+    if (data.menu.bm.metadata != bm) {
+        bm = data.menu.bm.metadata;
+        elementBM.innerText = `${bm.artist} - ${bm.title}`;
     }
 }
 
