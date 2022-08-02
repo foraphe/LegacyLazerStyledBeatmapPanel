@@ -19,7 +19,7 @@
 }
 
 body {
-    transition: 200ms;
+    transition: 300ms;
     background-repeat: no-repeat;
     background-position: center center;
     background-size: cover;
@@ -27,6 +27,7 @@ body {
 }
 
 #outerPanel {
+    transition: inherit;
     bottom: 1.25vh;
     width: 97vw;
     right: 1.5vw;
@@ -59,6 +60,7 @@ body {
 }
 
 #osuSpriteText {
+    transition: inherit;
     overflow: hidden;
     font-size: 2vh;
     position: relative;
