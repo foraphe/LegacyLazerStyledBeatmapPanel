@@ -1,4 +1,13 @@
-const USE_FULLSCREEN_BG = true;
+function getQueryString(bgSwitch) {
+    const url_string = decodeURI(window.location.href);
+    const url = new URL(url_string);
+    return url.searchParams.get(bgSwitch);
+}
+
+let USE_FULLSCREEN_BG = true;
+if(getQueryString('bgSwitch') == 0){
+    USE_FULLSCREEN_BG = false;
+}
 
 let socket = new ReconnectingWebSocket("ws://" + location.host + "/ws");
 
