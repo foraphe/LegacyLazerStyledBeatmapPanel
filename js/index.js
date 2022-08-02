@@ -5,7 +5,7 @@ function getQueryString(bgSwitch) {
 }
 
 let USE_FULLSCREEN_BG = true;
-if(getQueryString('bgSwitch') == 0){
+if (getQueryString('bgSwitch') == 0) {
     USE_FULLSCREEN_BG = false;
 }
 
@@ -83,7 +83,7 @@ socket.onmessage = event => {
         bg = data.menu.bm.path.full;
         let img = data.menu.bm.path.full;
         //Several characters are not escaped by encodeURIComponent
-        let url = `http://${location.host}/Songs/${encodeURIComponent(img.replace(/\\/g,'/'))}`
+        let url = `http://${location.host}/Songs/${encodeURIComponent(img.replace(/\\/g, '/'))}`
             .replace(/-/g, "%2D")
             .replace(/_/g, "%5F")
             .replace(/\./g, "%2E")
@@ -92,14 +92,17 @@ socket.onmessage = event => {
             .replace(/\'/g, "%27")
             .replace(/\(/g, "%28")
             .replace(/\)/g, "%29");
-        elementBG.style.backgroundImage = `linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.5)),url(${url})`;
-        if (USE_FULLSCREEN_BG) {
-            body.style.backgroundImage = `linear-gradient(rgba(0, 0, 0, 0.25),rgba(0, 0, 0, 0.25)),url(${url})`;
-        } else {
-            body.style.backgroundImage = 'none';
-            body.style.backgroundColor = rgba(255, 255, 255, 0);
-        }
-
+        let image = new Image();
+        image.addEventListener("load", () => {
+            elementBG.style.backgroundImage = `linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.5)),url(${url})`;
+            if (USE_FULLSCREEN_BG) {
+                body.style.backgroundImage = `linear-gradient(rgba(0, 0, 0, 0.25),rgba(0, 0, 0, 0.25)),url(${url})`;
+            } else {
+                body.style.backgroundImage = 'none';
+                body.style.backgroundColor = rgba(255, 255, 255, 0);
+            }
+        });
+        image.src = url;
     }
     if (data.menu.bm.metadata.artist != bm[0] || data.menu.bm.metadata.title != bm[1]) {
         bm[0] = data.menu.bm.metadata.artist;
@@ -108,7 +111,7 @@ socket.onmessage = event => {
     }
 }
 
-let formatTime = function(rawvalue) { //convert time in ms to hr:min:sec format
+let formatTime = function (rawvalue) { //convert time in ms to hr:min:sec format
     rawvalue = Math.round(rawvalue / 1000);
     let hr = 0,
         min = 0,
