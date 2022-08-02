@@ -70,9 +70,10 @@ socket.onmessage = event => {
     }
     if (data.menu.bm.path.full != bg) {
         bg = data.menu.bm.path.full;
-        let img = data.menu.bm.path.full.replace(/#/g, "%23").replace(/%/g, "%25").replace(/ /g, "%20").replace(/\\/g, "%2F");
+        let img = escape(bg.replace(/\\/g, '/'));
         let url = `http://${location.host}/Songs/${img}`;
         console.log(url);
+        console.log(bg);
         elementBG.style.backgroundImage = `linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.5)),url(${url})`;
         body.style.backgroundImage = `url(${url})`;
     }
@@ -82,7 +83,7 @@ socket.onmessage = event => {
     }
 }
 
-let formatTime = function(rawvalue) { //convert time in ms to hr:min:sec format
+let formatTime = function (rawvalue) { //convert time in ms to hr:min:sec format
     rawvalue = Math.round(rawvalue / 1000);
     let hr = 0,
         min = 0,
