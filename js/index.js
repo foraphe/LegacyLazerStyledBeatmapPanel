@@ -32,7 +32,7 @@ let ar = 0,
     length = 0,
     bg = null,
     sr = 0,
-    bm = null;
+    bm = [null, null]
 
 socket.onmessage = event => {
     let data = JSON.parse(event.data);
@@ -88,13 +88,14 @@ socket.onmessage = event => {
             body.style.backgroundImage = `linear-gradient(rgba(0, 0, 0, 0.25),rgba(0, 0, 0, 0.25)),url(${url})`;
         } else {
             body.style.backgroundImage = 'none';
-            body.style.backgroundColor
+            body.style.backgroundColor = rgba(255, 255, 255, 0);
         }
 
     }
-    if (data.menu.bm.metadata != bm) {
-        bm = data.menu.bm.metadata;
-        elementBM.innerText = `${bm.artist} - ${bm.title}`;
+    if (data.menu.bm.metadata.artist != bm[0] || data.menu.bm.metadata.title != bm[1]) {
+        bm[0] = data.menu.bm.metadata.artist;
+        bm[1] = data.menu.bm.metadata.title;
+        elementBM.innerText = `${bm[0]} - ${bm[1]}`;
     }
 }
 
