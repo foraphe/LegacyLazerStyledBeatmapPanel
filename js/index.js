@@ -74,7 +74,7 @@ socket.onmessage = event => {
         let url = `http://${location.host}/Songs/${img}`;
         console.log(url);
         elementBG.style.backgroundImage = `linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.5)),url(${url})`;
-        body.style.backgroundImage = `url(${url})`;
+        body.style.backgroundImage = `linear-gradient(rgba(0, 0, 0, 0.25),rgba(0, 0, 0, 0.25)),url(${url})`;
     }
     if (data.menu.bm.metadata != bm) {
         bm = data.menu.bm.metadata;
