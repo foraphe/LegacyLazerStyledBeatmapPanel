@@ -19,13 +19,13 @@
 }
 
 #outerPanel {
-    bottom: 10px;
+    bottom: 1vh;
     width: 97vw;
     right: 1.5vw;
-    transition: 800ms;
+    transition: 200ms;
     height: 50px;
     position: absolute;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 1vh rgba(0, 0, 0, 0.2);
     background-color: #ededed;
 }
 
@@ -47,7 +47,7 @@
 
 #osuSpriteText {
     overflow: hidden;
-    font-size: 1.6vmin;
+    font-size: 1.6vh;
     margin: auto;
     position: relative;
     color: white;
@@ -55,43 +55,57 @@
 }
 
 #osuSpriteText #beatmap {
-    margin-right: 5px;
+    margin-right: 0.5vh;
     font-size: inherit;
     text-align: center;
     font-family: "Exo 2 Bold Italic";
 }
 
 #osuSpriteText #mapper {
-    margin-right: 5px;
-    font-size: 1.4vmin;
+    margin-right: 0.5vh;
+    font-size: 1.4vh;
     text-align: center;
 }
 
 #osuSpriteText #difficulty {
-    font-size: 1.4vmin;
+    font-size: 1.4vh;
 }
 
-#osuSpriteText #mapper .textIndicator {
+#osuSpriteText .textHeading {
     font-size: inherit;
     font-family: "Exo 2 Regular Italic";
-    margin-right: 5px;
+    margin-right: 0.5vh;
 }
 
-#osuSpriteText #mapper .textValue {
+#osuSpriteText .textContent {
     font-size: inherit;
     font-family: "Exo 2 Bold Italic";
-    margin-right: 20px;
+    margin-right: 2vh;
 }
 
-#osuSpriteText #difficulty .textIndicator {
-    font-size: inherit;
-    font-family: "Exo 2 Regular Italic";
-    margin-right: 5px;
+#innerPanel .beatmapInfo {
+    text-align: center;
+    font-family: 'Exo 2 Bold';
+    font-size: 1.5vh;
+    padding: 0.1vh 1.5vh 0.1vh 1.5vh;
 }
 
-#osuSpriteText #difficulty .textValue {
-    font-size: inherit;
-    font-family: "Exo 2 Bold Italic";
+#innerPanel .beatmapInfo .textHeading {
+    color: #545454;
+}
+
+#innerPanel .beatmapInfo .textContent {
+    color: #848484;
+}
+
+#innerPanel .beatmapInfo.left {
+    position: absolute;
+    left: 20px;
+}
+
+#innerPanel .beatmapInfo .right {
+    position: absolute;
+    right: 20px;
 }
 
 .roundedBorder {
