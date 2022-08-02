@@ -70,7 +70,6 @@ socket.onmessage = event => {
     }
     if (data.menu.bm.path.full != bg) {
         bg = data.menu.bm.path.full;
-<<<<<<< HEAD
         //let img = data.menu.bm.path.full.replace(/#/g, "%23").replace(/%/g, "%25").replace(/ /g, "%20").replace(/\\/g, "%2F").replace(/\(/g, "%28").replace(/\)/g, "%29");
         //let url = `http://${location.host}/Songs/${img}`;
 
@@ -84,10 +83,6 @@ socket.onmessage = event => {
             .replace(/\'/g, "%27")
             .replace(/\(/g, "%28")
             .replace(/\)/g, "%29");
-=======
-        let img = escape(bg.replace(/\\/g, '/'));
-        let url = `http://${location.host}/Songs/${img}`;
->>>>>>> d2f2df08e3c58e97272f4211d67eecf1160a0cb3
         console.log(url);
         console.log(bg);
         elementBG.style.backgroundImage = `linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.5)),url(${url})`;
@@ -99,7 +94,7 @@ socket.onmessage = event => {
     }
 }
 
-let formatTime = function (rawvalue) { //convert time in ms to hr:min:sec format
+let formatTime = function(rawvalue) { //convert time in ms to hr:min:sec format
     rawvalue = Math.round(rawvalue / 1000);
     let hr = 0,
         min = 0,
