@@ -1,3 +1,23 @@
+@font-face {
+    font-family: "Exo 2 Bold";
+    src: url("../fonts/Exo2-Bold.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "Exo 2 Regular";
+    src: url("../fonts/Exo2-Regular.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "Exo 2 Bold Italic";
+    src: url("../fonts/Exo2-BoldItalic.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "Exo 2 Regular Italic";
+    src: url("../fonts/Exo2-Italic.ttf") format("truetype");
+}
+
 #outerPanel {
     bottom: 10px;
     width: 97vw;
@@ -6,7 +26,7 @@
     height: 50px;
     position: absolute;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    background-color: rgba(128, 128, 128, 0.07);
+    background-color: #ededed;
 }
 
 #innerPanel {
@@ -14,6 +34,7 @@
     position: relative;
     left: 13.5vw;
     height: inherit;
+    background-color: #dbdbdb;
 }
 
 #beatmapInfo {
@@ -21,18 +42,60 @@
     position: relative;
     left: 15vw;
     height: inherit;
+    background-color: black;
+}
+
+#osuSpriteText {
+    overflow: hidden;
+    font-size: 1.6vmin;
+    margin: auto;
+    position: relative;
+    color: white;
+    text-align: center;
+}
+
+#osuSpriteText #beatmap {
+    margin-right: 5px;
+    font-size: inherit;
+    text-align: center;
+    font-family: "Exo 2 Bold Italic";
+}
+
+#osuSpriteText #mapper {
+    margin-right: 5px;
+    font-size: 1.4vmin;
+    text-align: center;
+}
+
+#osuSpriteText #difficulty {
+    font-size: 1.4vmin;
+}
+
+#osuSpriteText #mapper .textIndicator {
+    font-size: inherit;
+    font-family: "Exo 2 Regular Italic";
+    margin-right: 5px;
+}
+
+#osuSpriteText #mapper .textValue {
+    font-size: inherit;
+    font-family: "Exo 2 Bold Italic";
+    margin-right: 20px;
+}
+
+#osuSpriteText #difficulty .textIndicator {
+    font-size: inherit;
+    font-family: "Exo 2 Regular Italic";
+    margin-right: 5px;
+}
+
+#osuSpriteText #difficulty .textValue {
+    font-size: inherit;
+    font-family: "Exo 2 Bold Italic";
 }
 
 .roundedBorder {
     border-radius: 25px;
-}
-
-.textIndicator {
-    color: rgba(128, 128, 128, 0.67);
-}
-
-.textValue {
-    color: rgba(128, 128, 128, 0.5);
 }
 
 div {
