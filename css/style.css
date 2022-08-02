@@ -20,6 +20,8 @@
 
 body {
     transition: 200ms;
+    background-repeat: no-repeat;
+    background-position: center center;
 }
 
 #outerPanel {
@@ -45,6 +47,11 @@ body {
     position: relative;
     left: 15vw;
     height: inherit;
+    background-color: black;
+    background-image: none;
+    background-repeat: no-repeat;
+    background-position: center center;
+    display: inline-block;
 }
 
 #osuSpriteText {

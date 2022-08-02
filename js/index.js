@@ -70,9 +70,11 @@ socket.onmessage = event => {
     }
     if (data.menu.bm.path.full != bg) {
         bg = data.menu.bm.path.full;
-        elementBG.style.backgroundImage = `url(http://127.0.0.1:24050/Songs/${bg.replace(/#/g, "%23").replace(/%/g, "%25")}})`;
-        body.style.backgroundImage = `url(http://127.0.0.1:24050/Songs/${bg.replace(/#/g, "%23").replace(/%/g, "%25")}})`;
-        elementBG.style.backgroundColor = 'none';
+        let img = data.menu.bm.path.full.replace(/#/g, "%23").replace(/%/g, "%25").replace(/ /g, "%20").replace(/\\/g, "%2F");
+        let url = `http://${location.host}/Songs/${img}`;
+        console.log(url);
+        elementBG.style.backgroundImage = `url(${url})`;
+        body.style.backgroundImage = `url(${url})`;
     }
     if (data.menu.bm.metadata != bm) {
         bm = data.menu.bm.metadata;
