@@ -48,13 +48,13 @@
 #osuSpriteText {
     overflow: hidden;
     font-size: 2vh;
-    margin: auto;
     position: relative;
     color: white;
     text-align: center;
 }
 
 #osuSpriteText #beatmap {
+    margin-top: 0.5vh;
     margin-right: 0.625vh;
     font-size: inherit;
     text-align: center;
@@ -133,12 +133,12 @@
     display: flex;
 }
 
+.lineWrapper.center {
+    justify-content: center;
+    align-items: center;
+}
+
 #osuLogo {
     width: 5vh;
     height: 5vh;
-}
-
-.center {
-    margin: auto;
-    text-align: center;
 }
