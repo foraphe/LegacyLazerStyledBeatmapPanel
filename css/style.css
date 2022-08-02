@@ -48,6 +48,7 @@ body {
     position: relative;
     left: 15vw;
     height: inherit;
+    overflow: hidden;
     background-color: black;
     background-image: none;
     background-repeat: no-repeat;
@@ -142,11 +143,16 @@ body {
 
 .lineWrapper {
     display: flex;
+    flex-wrap: nowrap;
+    white-space: nowrap;
+    overflow: hidden;
 }
 
 .lineWrapper.center {
     justify-content: center;
     align-items: center;
+    text-align: left;
+    max-width: 40vw;
 }
 
 #osuLogo {

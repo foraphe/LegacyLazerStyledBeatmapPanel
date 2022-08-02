@@ -70,8 +70,19 @@ socket.onmessage = event => {
     }
     if (data.menu.bm.path.full != bg) {
         bg = data.menu.bm.path.full;
-        let img = data.menu.bm.path.full.replace(/#/g, "%23").replace(/%/g, "%25").replace(/ /g, "%20").replace(/\\/g, "%2F");
-        let url = `http://${location.host}/Songs/${img}`;
+        //let img = data.menu.bm.path.full.replace(/#/g, "%23").replace(/%/g, "%25").replace(/ /g, "%20").replace(/\\/g, "%2F").replace(/\(/g, "%28").replace(/\)/g, "%29");
+        //let url = `http://${location.host}/Songs/${img}`;
+
+        let img = data.menu.bm.path.full;
+        let url = `http://${location.host}/Songs/${encodeURIComponent(img.replace(/\\/g,'/'))}`
+            .replace(/-/g, "%2D")
+            .replace(/_/g, "%5F")
+            .replace(/\./g, "%2E")
+            .replace(/!/g, "%21")
+            .replace(/~/g, "%7E")
+            .replace(/\'/g, "%27")
+            .replace(/\(/g, "%28")
+            .replace(/\)/g, "%29");
         console.log(url);
         elementBG.style.backgroundImage = `linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.5)),url(${url})`;
         body.style.backgroundImage = `linear-gradient(rgba(0, 0, 0, 0.25),rgba(0, 0, 0, 0.25)),url(${url})`;
