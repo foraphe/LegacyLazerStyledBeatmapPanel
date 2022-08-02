@@ -23,6 +23,7 @@ body {
     background-repeat: no-repeat;
     background-position: center center;
     background-size: cover;
+    background-color: rgba(255, 255, 255, 0);
 }
 
 #outerPanel {
@@ -96,6 +97,7 @@ body {
     font-size: inherit;
     font-family: "Exo 2 Bold Italic";
     margin-right: 2.5vh;
+    max-width: 22vw;
 }
 
 #innerPanel .beatmapInfo {
@@ -151,7 +153,6 @@ body {
 .lineWrapper.center {
     justify-content: center;
     align-items: center;
-    text-align: left;
     max-width: 40vw;
 }
 

@@ -1,3 +1,5 @@
+const USE_FULLSCREEN_BG = true;
+
 let socket = new ReconnectingWebSocket("ws://" + location.host + "/ws");
 
 socket.onclose = event => {
@@ -82,7 +84,13 @@ socket.onmessage = event => {
             .replace(/\(/g, "%28")
             .replace(/\)/g, "%29");
         elementBG.style.backgroundImage = `linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.5)),url(${url})`;
-        body.style.backgroundImage = `linear-gradient(rgba(0, 0, 0, 0.25),rgba(0, 0, 0, 0.25)),url(${url})`;
+        if (USE_FULLSCREEN_BG) {
+            body.style.backgroundImage = `linear-gradient(rgba(0, 0, 0, 0.25),rgba(0, 0, 0, 0.25)),url(${url})`;
+        } else {
+            body.style.backgroundImage = 'none';
+            body.style.backgroundColor
+        }
+
     }
     if (data.menu.bm.metadata != bm) {
         bm = data.menu.bm.metadata;
