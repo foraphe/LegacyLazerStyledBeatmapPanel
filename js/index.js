@@ -73,7 +73,7 @@ socket.onmessage = event => {
         let img = data.menu.bm.path.full.replace(/#/g, "%23").replace(/%/g, "%25").replace(/ /g, "%20").replace(/\\/g, "%2F");
         let url = `http://${location.host}/Songs/${img}`;
         console.log(url);
-        elementBG.style.backgroundImage = `url(${url})`;
+        elementBG.style.backgroundImage = `linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.5)),url(${url})`;
         body.style.backgroundImage = `url(${url})`;
     }
     if (data.menu.bm.metadata != bm) {
