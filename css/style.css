@@ -19,13 +19,13 @@
 }
 
 #outerPanel {
-    bottom: 1vh;
+    bottom: 1.25vh;
     width: 97vw;
     right: 1.5vw;
     transition: 200ms;
-    height: 50px;
+    height: 6.25vh;
     position: absolute;
-    box-shadow: 0 0 1vh rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     background-color: #ededed;
 }
 
@@ -37,7 +37,7 @@
     background-color: #dbdbdb;
 }
 
-#beatmapInfo {
+#dataBeatmapInfo {
     width: 40vw;
     position: relative;
     left: 15vw;
@@ -47,7 +47,7 @@
 
 #osuSpriteText {
     overflow: hidden;
-    font-size: 1.6vh;
+    font-size: 2vh;
     margin: auto;
     position: relative;
     color: white;
@@ -55,39 +55,42 @@
 }
 
 #osuSpriteText #beatmap {
-    margin-right: 0.5vh;
+    margin-right: 0.625vh;
     font-size: inherit;
     text-align: center;
     font-family: "Exo 2 Bold Italic";
 }
 
 #osuSpriteText #mapper {
-    margin-right: 0.5vh;
-    font-size: 1.4vh;
+    margin-right: 0.625vh;
+    font-size: 1.75vh;
     text-align: center;
+    display: inherit;
 }
 
 #osuSpriteText #difficulty {
-    font-size: 1.4vh;
+    font-size: 1.75vh;
+    text-align: center;
+    display: inherit;
 }
 
 #osuSpriteText .textHeading {
     font-size: inherit;
     font-family: "Exo 2 Regular Italic";
-    margin-right: 0.5vh;
+    margin-right: 0.625vh;
 }
 
 #osuSpriteText .textContent {
     font-size: inherit;
     font-family: "Exo 2 Bold Italic";
-    margin-right: 2vh;
+    margin-right: 2.5vh;
 }
 
 #innerPanel .beatmapInfo {
     text-align: center;
     font-family: 'Exo 2 Bold';
-    font-size: 1.5vh;
-    padding: 0.1vh 1.5vh 0.1vh 1.5vh;
+    font-size: 1.875vh;
+    padding: 0.125vh 1.875vh 0.125vh 1.875vh;
 }
 
 #innerPanel .beatmapInfo .textHeading {
@@ -99,19 +102,43 @@
 }
 
 #innerPanel .beatmapInfo.left {
-    position: absolute;
-    left: 20px;
+    position: fixed;
+    left: 16.25vw;
+    text-align: left;
+    padding: 0;
+    bottom: 2.25vh;
 }
 
-#innerPanel .beatmapInfo .right {
-    position: absolute;
-    right: 20px;
+#innerPanel .beatmapInfo.right {
+    position: fixed;
+    right: 16.25vw;
+    text-align: right;
+    padding: 0;
+    bottom: 2.25vh;
+}
+
+#logoContainer {
+    position: fixed;
+    right: calc(1.5vw + 1.125vh);
+    bottom: 2.125vh;
+    height: 5vh;
+    width: 5vh;
 }
 
 .roundedBorder {
-    border-radius: 25px;
+    border-radius: 3.125vh;
 }
 
-div {
+.lineWrapper {
     display: flex;
+}
+
+#osuLogo {
+    width: 5vh;
+    height: 5vh;
+}
+
+.center {
+    margin: auto;
+    text-align: center;
 }

@@ -7,46 +7,53 @@
 <body>
     <div id="outerPanel" class="roundedBorder">
         <div id="innerPanel" class="roundedBorder">
-            <div id="beatmapInfo" class="roundedBorder">
+            <div id="dataBeatmapInfo" class="roundedBorder">
                 <div id="osuSpriteText">
                     <div id="beatmap">Random Artist - A Song</div>
-                    <div id="mapper">
-                        <div class="textHeading">mapper</div>
-                        <div class="textContent" id="dataMapper">someone</div>
-                    </div>
-                    <div id="difficulty">
-                        <div class="textHeading">difficulty</div>
-                        <div class="textContent" id="dataDifficulty">Insane</div>
+                    <div class="lineWrapper">
+                        <div id="mapper">
+                            <div class="textHeading">mapper</div>
+                            <div class="textContent" id="dataMapper">someone</div>
+                        </div>
+                        <div id="difficulty">
+                            <div class="textHeading">difficulty</div>
+                            <div class="textContent" id="dataDifficulty">Insane</div>
+                        </div>
                     </div>
                 </div>
             </div>
             <div class="beatmapInfo left">
-                <div>
+                <div class="lineWrapper">
                     <div class="textHeading">Length&nbsp;</div>
                     <div class="textContent" id="dataLength">NaN</div>
                 </div>
-                <div>
+                <div class="lineWrapper">
                     <div class="textHeading">BPM&nbsp;</div>
                     <div class="textContent" id="dataBpm">NaN</div>
                 </div>
             </div>
-            <div class="beatmapInfo left">
-                <div>
+            <div class="beatmapInfo right">
+                <div class="lineWrapper">
                     <div class="textHeading">CS&nbsp;</div>
-                    <div class="textContent" id="dataCs">NaN</div>
+                    <div class="textContent" id="dataCs">0</div>
                     <div class="textHeading">/AR&nbsp;</div>
-                    <div class="textContent" id="dataAr">NaN</div>
+                    <div class="textContent" id="dataAr">0</div>
                     <div class="textHeading">/OD&nbsp;</div>
-                    <div class="textContent" id="dataOd">NaN</div>
+                    <div class="textContent" id="dataOd">0</div>
                 </div>
-                <div>
+                <div class="lineWrapper">
                     <div class="textHeading">Star Rating&nbsp;</div>
                     <div class="textContent" id="dataSr">NaN</div>
                 </div>
             </div>
         </div>
+        <div id="logoContainer">
+            <img src="img/osulogo.svg" id="osuLogo"></img>
+        </div>
     </div>
     <link href="css/style.css" rel="stylesheet" />
+    <script src="js/reconnecting-websocket.min.js"></script>
+    <script src="js/index.js"></script>
 </body>
 
 </html>
