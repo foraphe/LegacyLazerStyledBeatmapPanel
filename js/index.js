@@ -1,7 +1,7 @@
-function getQueryString(bgSwitch) {
+function getQueryString(param) {
     const url_string = decodeURI(window.location.href);
     const url = new URL(url_string);
-    return url.searchParams.get(bgSwitch);
+    return url.searchParams.get(param);
 }
 
 let USE_FULLSCREEN_BG = true,
