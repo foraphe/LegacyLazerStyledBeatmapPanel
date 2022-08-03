@@ -6,7 +6,8 @@ function getQueryString(bgSwitch) {
 
 let USE_FULLSCREEN_BG = true,
     FULLSCREEN_BACKGROUND_DIM = 0.25,
-    EXPANDED = true;
+    EXPANDED = true,
+    oldExpanded = true;
 if (getQueryString('bgSwitch') == 0) {
     USE_FULLSCREEN_BG = false;
 }
@@ -16,6 +17,7 @@ if (getQueryString('bgDim') != undefined) {
 
 if (getQueryString('expanded') == 0) {
     EXPANDED = false;
+    oldExpanded = false;
 }
 
 let socket = new ReconnectingWebSocket("ws://" + location.host + "/ws");
@@ -66,6 +68,27 @@ if (!EXPANDED) {
 socket.onmessage = event => {
     let data = JSON.parse(event.data);
     if (data.menu.gameMode !== 0) return;
+
+    if (oldExpanded != EXPANDED) {
+        oldExpanded = EXPANDED;
+        if (!EXPANDED) {
+            document.getElementById('outerPanel').style = 'width:25vw;left:37.5vw;';
+            document.getElementById('innerPanel').style = 'width:25vw;left:0;';
+            document.getElementById('dataBeatmapInfo').style = 'width:25vw;left:0;border:0.125vh solid white';
+            document.getElementById('coverBeatmapInfo').style = 'width:25vw;left:0;';
+            document.getElementsByClassName('left')[0].style = 'display:none;';
+            document.getElementsByClassName('right')[0].style = 'display:none;';
+            document.getElementById('osuLogo').style = 'display:none;';
+        } else {
+            document.getElementById('outerPanel').style = '';
+            document.getElementById('innerPanel').style = '';
+            document.getElementById('dataBeatmapInfo').style = '';
+            document.getElementById('coverBeatmapInfo').style = '';
+            document.getElementsByClassName('left')[0].style = '';
+            document.getElementsByClassName('right')[0].style = '';
+            document.getElementById('osuLogo').style = '';
+        }
+    }
 
     if (data.menu.bm.metadata.artist != bm[0] || data.menu.bm.metadata.title != bm[1]) {
         bm[0] = data.menu.bm.metadata.artist;
