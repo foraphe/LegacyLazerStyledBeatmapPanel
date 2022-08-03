@@ -55,12 +55,12 @@ let ar = 0,
 
 if (!EXPANDED) {
     document.getElementById('outerPanel').style = 'width:25vw;left:37.5vw;';
-    document.getElementById('innerPanel').style = 'width:25vw;left:0';
-    document.getElementById('dataBeatmapInfo').style = 'width:25vw;left:0;';
+    document.getElementById('innerPanel').style = 'width:25vw;left:0;';
+    document.getElementById('dataBeatmapInfo').style = 'width:25vw;left:0;border:0.125vh solid white';
     document.getElementById('coverBeatmapInfo').style = 'width:25vw;left:0;';
-    document.getElementsByClassName('left')[0].style = 'display:none';
-    document.getElementsByClassName('right')[0].style = 'display:none';
-    document.getElementById('osuLogo').style = 'display:none';
+    document.getElementsByClassName('left')[0].style = 'display:none;';
+    document.getElementsByClassName('right')[0].style = 'display:none;';
+    document.getElementById('osuLogo').style = 'display:none;';
 }
 
 socket.onmessage = event => {
