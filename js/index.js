@@ -1,9 +1,3 @@
-function getQueryString(param) {
-    const url_string = decodeURI(window.location.href);
-    const url = new URL(url_string);
-    return url.searchParams.get(param);
-}
-
 let USE_FULLSCREEN_BG = true,
     FULLSCREEN_BACKGROUND_DIM = 0.25,
     EXPANDED = true,
@@ -119,14 +113,12 @@ socket.onmessage = event => {
         let image = new Image();
         image.addEventListener("load", () => {
             elementBG.style.backgroundImage = `linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.5)),url(${url})`;
-            elementBGCover.classList.remove('transit');
-            elementBGCover.offsetHeight;
-            elementBGCover.classList.add('transit');
+            resetAnimation(elementBGCover, 'transit');
             if (USE_FULLSCREEN_BG) {
                 body.style.backgroundImage = `linear-gradient(rgba(0, 0, 0, ${FULLSCREEN_BACKGROUND_DIM}),rgba(0, 0, 0, ${FULLSCREEN_BACKGROUND_DIM})),url(${url})`;
             } else {
                 body.style.backgroundImage = 'none';
-                body.style.backgroundColor = rgba(255, 255, 255, 0);
+                body.style.backgroundColor = 'rgba(255, 255, 255, 0)';
             }
         });
         image.src = url;
@@ -135,50 +127,38 @@ socket.onmessage = event => {
         if (data.menu.bm.stats.AR != ar) {
             ar = data.menu.bm.stats.AR;
             elementAR.innerText = data.menu.bm.stats.AR == data.menu.bm.stats.memoryAR ? data.menu.bm.stats.AR : `${data.menu.bm.stats.AR}*`;
-            elementAR.classList.remove('open');
-            elementAR.offsetHeight;
-            elementAR.classList.add('open');
+            resetAnimation(elementAR, 'open');
         }
         if (data.menu.bm.stats.OD != od) {
             od = data.menu.bm.stats.OD;
             elementOD.innerText = data.menu.bm.stats.OD == data.menu.bm.stats.memoryOD ? data.menu.bm.stats.OD : `${data.menu.bm.stats.OD}*`;
-            elementOD.classList.remove('open');
-            elementOD.offsetHeight;
-            elementOD.classList.add('open');
+            resetAnimation(elementOD, 'open');
         }
         if (data.menu.bm.stats.CS != cs) {
             cs = data.menu.bm.stats.CS;
             elementCS.innerText = data.menu.bm.stats.CS == data.menu.bm.stats.memoryCS ? data.menu.bm.stats.CS : `${data.menu.bm.stats.CS}*`;
-            elementCS.classList.remove('open');
-            elementCS.offsetHeight;
-            elementCS.classList.add('open');
+            resetAnimation(elementCS, 'open');
         }
         if (data.menu.bm.stats.BPM.min != bpm[0] || data.menu.bm.stats.BPM.max != bpm[1]) {
             bpm[0] = data.menu.bm.stats.BPM.min;
             bpm[1] = data.menu.bm.stats.BPM.max;
             elementBPM.innerText = data.menu.bm.stats.BPM.min == data.menu.bm.stats.BPM.max ? data.menu.bm.stats.BPM.min : `${data.menu.bm.stats.BPM.min}~${data.menu.bm.stats.BPM.max}`;
-            elementBPM.classList.remove('open');
-            elementBPM.offsetHeight;
-            elementBPM.classList.add('open');
+            resetAnimation(elementBPM, 'open');
         }
         if (data.menu.bm.stats.fullSR != sr) {
             sr = data.menu.bm.stats.fullSR;
             elementSR.innerText = data.menu.bm.stats.fullSR;
-            elementSR.classList.remove('open');
-            elementSR.offsetHeight;
-            elementSR.classList.add('open');
+            resetAnimation(elementSR, 'open');
         }
         if (data.menu.bm.time.mp3 != length) {
             length = data.menu.bm.time.mp3;
             elementLength.innerText = formatTime(data.menu.bm.time.mp3);
-            elementLength.classList.remove('open');
-            elementLength.offsetHeight;
-            elementLength.classList.add('open');
+            resetAnimation(elementLength, 'open');
         }
     }
 }
 
-let formatTime = function(rawvalue) { //convert time in ms to hr:min:sec format
+function formatTime(rawvalue) { //convert time in ms to hr:min:sec format
     rawvalue = Math.round(rawvalue / 1000);
     let hr = 0,
         min = 0,
@@ -187,4 +167,16 @@ let formatTime = function(rawvalue) { //convert time in ms to hr:min:sec format
     min = parseInt((rawvalue - hr * 3600) / 60).toString().padStart(2, '0');
     sec = (rawvalue - hr * 3600 - min * 60).toString().padStart(2, '0');
     return hr > 0 ? `${hr}:${min}:${sec}` : `${min}:${sec}`;
+}
+
+function resetAnimation(element, className) { //reset css animation <className> on <element>
+    element.classList.remove(className);
+    element.offsetHeight;
+    element.classList.add(className);
+}
+
+function getQueryString(param) {
+    const url_string = decodeURI(window.location.href);
+    const url = new URL(url_string);
+    return url.searchParams.get(param);
 }
