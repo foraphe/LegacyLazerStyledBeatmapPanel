@@ -19,7 +19,7 @@
 }
 
 body {
-    transition: background-image 0.3s ease-in-out;
+    transition: 0.2s ease-in-out;
     background-repeat: no-repeat;
     background-position: center center;
     background-size: cover;
@@ -38,6 +38,7 @@ body {
 }
 
 #innerPanel {
+    transition: inherit;
     width: 70vw;
     position: relative;
     left: 13.5vw;
@@ -46,6 +47,7 @@ body {
 }
 
 #dataBeatmapInfo {
+    transition: inherit;
     width: 40vw;
     position: relative;
     left: 15vw;
@@ -85,6 +87,7 @@ body {
     font-size: inherit;
     text-align: center;
     font-family: "Exo 2 Bold Italic";
+    white-space: nowrap;
 }
 
 #osuSpriteText #mapper {
@@ -118,6 +121,7 @@ body {
     font-family: 'Exo 2 Bold';
     font-size: 1.875vh;
     padding: 0.125vh 1.875vh 0.125vh 1.875vh;
+    white-space: nowrap;
 }
 
 #innerPanel .beatmapInfo .textHeading {

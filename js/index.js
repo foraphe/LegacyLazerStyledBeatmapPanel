@@ -5,12 +5,17 @@ function getQueryString(bgSwitch) {
 }
 
 let USE_FULLSCREEN_BG = true,
-    FULLSCREEN_BACKGROUND_DIM = 0.25;
+    FULLSCREEN_BACKGROUND_DIM = 0.25,
+    EXPANDED = true;
 if (getQueryString('bgSwitch') == 0) {
     USE_FULLSCREEN_BG = false;
 }
 if (getQueryString('bgDim') != undefined) {
     FULLSCREEN_BACKGROUND_DIM = Number(getQueryString('bgDim'));
+}
+
+if (getQueryString('expanded') == 0) {
+    EXPANDED = false;
 }
 
 let socket = new ReconnectingWebSocket("ws://" + location.host + "/ws");
@@ -46,61 +51,34 @@ let ar = 0,
     length = 0,
     bg = null,
     sr = 0,
-    bm = [null, null]
+    bm = [null, null];
+
+if (!EXPANDED) {
+    document.getElementById('outerPanel').style = 'width:25vw;left:37.5vw;';
+    document.getElementById('innerPanel').style = 'width:25vw;left:0';
+    document.getElementById('dataBeatmapInfo').style = 'width:25vw;left:0;';
+    document.getElementById('coverBeatmapInfo').style = 'width:25vw;left:0;';
+    document.getElementsByClassName('left')[0].style = 'display:none';
+    document.getElementsByClassName('right')[0].style = 'display:none';
+    document.getElementById('osuLogo').style = 'display:none';
+}
 
 socket.onmessage = event => {
     let data = JSON.parse(event.data);
     if (data.menu.gameMode !== 0) return;
-    if (data.menu.bm.stats.AR != ar) {
-        ar = data.menu.bm.stats.AR;
-        elementAR.innerText = data.menu.bm.stats.AR == data.menu.bm.stats.memoryAR ? data.menu.bm.stats.AR : `${data.menu.bm.stats.AR}*`;
-        elementAR.classList.remove('open');
-        elementAR.offsetHeight;
-        elementAR.classList.add('open');
-    }
-    if (data.menu.bm.stats.OD != od) {
-        od = data.menu.bm.stats.OD;
-        elementOD.innerText = data.menu.bm.stats.OD == data.menu.bm.stats.memoryOD ? data.menu.bm.stats.OD : `${data.menu.bm.stats.OD}*`;
-        elementOD.classList.remove('open');
-        elementOD.offsetHeight;
-        elementOD.classList.add('open');
-    }
-    if (data.menu.bm.stats.CS != cs) {
-        cs = data.menu.bm.stats.CS;
-        elementCS.innerText = data.menu.bm.stats.CS == data.menu.bm.stats.memoryCS ? data.menu.bm.stats.CS : `${data.menu.bm.stats.CS}*`;
-        elementCS.classList.remove('open');
-        elementCS.offsetHeight;
-        elementCS.classList.add('open');
-    }
-    if (data.menu.bm.stats.BPM.min != bpm[0] || data.menu.bm.stats.BPM.max != bpm[1]) {
-        bpm[0] = data.menu.bm.stats.BPM.min;
-        bpm[1] = data.menu.bm.stats.BPM.max;
-        elementBPM.innerText = data.menu.bm.stats.BPM.min == data.menu.bm.stats.BPM.max ? data.menu.bm.stats.BPM.min : `${data.menu.bm.stats.BPM.min}~${data.menu.bm.stats.BPM.max}`;
-        elementBPM.classList.remove('open');
-        elementBPM.offsetHeight;
-        elementBPM.classList.add('open');
-    }
-    if (data.menu.bm.stats.fullSR != sr) {
-        sr = data.menu.bm.stats.fullSR;
-        elementSR.innerText = data.menu.bm.stats.fullSR;
-        elementSR.classList.remove('open');
-        elementSR.offsetHeight;
-        elementSR.classList.add('open');
-    }
-    if (data.menu.bm.metadata.mapper != mapper) {
-        mapper = data.menu.bm.metadata.mapper
-        elementMapper.innerText = data.menu.bm.metadata.mapper;
-    }
-    if (data.menu.bm.time.mp3 != length) {
-        length = data.menu.bm.time.mp3;
-        elementLength.innerText = formatTime(data.menu.bm.time.mp3);
-        elementLength.classList.remove('open');
-        elementLength.offsetHeight;
-        elementLength.classList.add('open');
+
+    if (data.menu.bm.metadata.artist != bm[0] || data.menu.bm.metadata.title != bm[1]) {
+        bm[0] = data.menu.bm.metadata.artist;
+        bm[1] = data.menu.bm.metadata.title;
+        elementBM.innerText = `${bm[0]} - ${bm[1]}`;
     }
     if (data.menu.bm.metadata.difficulty != diff) {
         diff = data.menu.bm.metadata.difficulty;
         elementDiff.innerText = data.menu.bm.metadata.difficulty;
+    }
+    if (data.menu.bm.metadata.mapper != mapper) {
+        mapper = data.menu.bm.metadata.mapper
+        elementMapper.innerText = data.menu.bm.metadata.mapper;
     }
     if (data.menu.bm.path.full != bg) {
         bg = data.menu.bm.path.full;
@@ -130,10 +108,50 @@ socket.onmessage = event => {
         });
         image.src = url;
     }
-    if (data.menu.bm.metadata.artist != bm[0] || data.menu.bm.metadata.title != bm[1]) {
-        bm[0] = data.menu.bm.metadata.artist;
-        bm[1] = data.menu.bm.metadata.title;
-        elementBM.innerText = `${bm[0]} - ${bm[1]}`;
+    if (EXPANDED) {
+        if (data.menu.bm.stats.AR != ar) {
+            ar = data.menu.bm.stats.AR;
+            elementAR.innerText = data.menu.bm.stats.AR == data.menu.bm.stats.memoryAR ? data.menu.bm.stats.AR : `${data.menu.bm.stats.AR}*`;
+            elementAR.classList.remove('open');
+            elementAR.offsetHeight;
+            elementAR.classList.add('open');
+        }
+        if (data.menu.bm.stats.OD != od) {
+            od = data.menu.bm.stats.OD;
+            elementOD.innerText = data.menu.bm.stats.OD == data.menu.bm.stats.memoryOD ? data.menu.bm.stats.OD : `${data.menu.bm.stats.OD}*`;
+            elementOD.classList.remove('open');
+            elementOD.offsetHeight;
+            elementOD.classList.add('open');
+        }
+        if (data.menu.bm.stats.CS != cs) {
+            cs = data.menu.bm.stats.CS;
+            elementCS.innerText = data.menu.bm.stats.CS == data.menu.bm.stats.memoryCS ? data.menu.bm.stats.CS : `${data.menu.bm.stats.CS}*`;
+            elementCS.classList.remove('open');
+            elementCS.offsetHeight;
+            elementCS.classList.add('open');
+        }
+        if (data.menu.bm.stats.BPM.min != bpm[0] || data.menu.bm.stats.BPM.max != bpm[1]) {
+            bpm[0] = data.menu.bm.stats.BPM.min;
+            bpm[1] = data.menu.bm.stats.BPM.max;
+            elementBPM.innerText = data.menu.bm.stats.BPM.min == data.menu.bm.stats.BPM.max ? data.menu.bm.stats.BPM.min : `${data.menu.bm.stats.BPM.min}~${data.menu.bm.stats.BPM.max}`;
+            elementBPM.classList.remove('open');
+            elementBPM.offsetHeight;
+            elementBPM.classList.add('open');
+        }
+        if (data.menu.bm.stats.fullSR != sr) {
+            sr = data.menu.bm.stats.fullSR;
+            elementSR.innerText = data.menu.bm.stats.fullSR;
+            elementSR.classList.remove('open');
+            elementSR.offsetHeight;
+            elementSR.classList.add('open');
+        }
+        if (data.menu.bm.time.mp3 != length) {
+            length = data.menu.bm.time.mp3;
+            elementLength.innerText = formatTime(data.menu.bm.time.mp3);
+            elementLength.classList.remove('open');
+            elementLength.offsetHeight;
+            elementLength.classList.add('open');
+        }
     }
 }
 
