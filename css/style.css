@@ -66,7 +66,7 @@ body {
     top: 0;
     left: 0;
     height: inherit;
-    background-color: black;
+    background-color: white;
     opacity: 0;
 }
 
@@ -180,12 +180,12 @@ body {
 }
 
 .transit {
-    animation: clear 0.1s linear;
+    animation: clear 0.3s linear;
 }
 
 @keyframes fade {
     0% {
-        color: rgba(0, 0, 0, 0);
+        color: rgba(128, 128, 128, 0.5);
     }
     100% {
         color: #808080;
