@@ -4,9 +4,13 @@ function getQueryString(bgSwitch) {
     return url.searchParams.get(bgSwitch);
 }
 
-let USE_FULLSCREEN_BG = true;
+let USE_FULLSCREEN_BG = true,
+    FULLSCREEN_BACKGROUND_DIM = 0.25;
 if (getQueryString('bgSwitch') == 0) {
     USE_FULLSCREEN_BG = false;
+}
+if (getQueryString('bgDim') != undefined) {
+    FULLSCREEN_BACKGROUND_DIM = Number(getQueryString('bgDim'));
 }
 
 let socket = new ReconnectingWebSocket("ws://" + location.host + "/ws");
@@ -31,6 +35,7 @@ let elementBG = document.getElementById('dataBeatmapInfo');
 let body = document.body;
 let elementSR = document.getElementById('dataSr');
 let elementBM = document.getElementById('dataBeatmap');
+let elementBGCover = document.getElementById('coverBeatmapInfo');
 
 let ar = 0,
     od = 0,
@@ -49,23 +54,38 @@ socket.onmessage = event => {
     if (data.menu.bm.stats.AR != ar) {
         ar = data.menu.bm.stats.AR;
         elementAR.innerText = data.menu.bm.stats.AR == data.menu.bm.stats.memoryAR ? data.menu.bm.stats.AR : `${data.menu.bm.stats.AR}*`;
+        elementAR.classList.remove('open');
+        elementAR.offsetHeight;
+        elementAR.classList.add('open');
     }
     if (data.menu.bm.stats.OD != od) {
         od = data.menu.bm.stats.OD;
         elementOD.innerText = data.menu.bm.stats.OD == data.menu.bm.stats.memoryOD ? data.menu.bm.stats.OD : `${data.menu.bm.stats.OD}*`;
+        elementOD.classList.remove('open');
+        elementOD.offsetHeight;
+        elementOD.classList.add('open');
     }
     if (data.menu.bm.stats.CS != cs) {
         cs = data.menu.bm.stats.CS;
         elementCS.innerText = data.menu.bm.stats.CS == data.menu.bm.stats.memoryCS ? data.menu.bm.stats.CS : `${data.menu.bm.stats.CS}*`;
+        elementCS.classList.remove('open');
+        elementCS.offsetHeight;
+        elementCS.classList.add('open');
     }
     if (data.menu.bm.stats.BPM.min != bpm[0] || data.menu.bm.stats.BPM.max != bpm[1]) {
         bpm[0] = data.menu.bm.stats.BPM.min;
         bpm[1] = data.menu.bm.stats.BPM.max;
         elementBPM.innerText = data.menu.bm.stats.BPM.min == data.menu.bm.stats.BPM.max ? data.menu.bm.stats.BPM.min : `${data.menu.bm.stats.BPM.min}~${data.menu.bm.stats.BPM.max}`;
+        elementBPM.classList.remove('open');
+        elementBPM.offsetHeight;
+        elementBPM.classList.add('open');
     }
     if (data.menu.bm.stats.fullSR != sr) {
         sr = data.menu.bm.stats.fullSR;
-        elementSR.innerText = data.menu.bm.stats.fullSR
+        elementSR.innerText = data.menu.bm.stats.fullSR;
+        elementSR.classList.remove('open');
+        elementSR.offsetHeight;
+        elementSR.classList.add('open');
     }
     if (data.menu.bm.metadata.mapper != mapper) {
         mapper = data.menu.bm.metadata.mapper
@@ -74,6 +94,9 @@ socket.onmessage = event => {
     if (data.menu.bm.time.mp3 != length) {
         length = data.menu.bm.time.mp3;
         elementLength.innerText = formatTime(data.menu.bm.time.mp3);
+        elementLength.classList.remove('open');
+        elementLength.offsetHeight;
+        elementLength.classList.add('open');
     }
     if (data.menu.bm.metadata.difficulty != diff) {
         diff = data.menu.bm.metadata.difficulty;
@@ -95,8 +118,11 @@ socket.onmessage = event => {
         let image = new Image();
         image.addEventListener("load", () => {
             elementBG.style.backgroundImage = `linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.5)),url(${url})`;
+            elementBGCover.classList.remove('transit');
+            elementBGCover.offsetHeight;
+            elementBGCover.classList.add('transit');
             if (USE_FULLSCREEN_BG) {
-                body.style.backgroundImage = `linear-gradient(rgba(0, 0, 0, 0.25),rgba(0, 0, 0, 0.25)),url(${url})`;
+                body.style.backgroundImage = `linear-gradient(rgba(0, 0, 0, ${FULLSCREEN_BACKGROUND_DIM}),rgba(0, 0, 0, ${FULLSCREEN_BACKGROUND_DIM})),url(${url})`;
             } else {
                 body.style.backgroundImage = 'none';
                 body.style.backgroundColor = rgba(255, 255, 255, 0);
@@ -111,13 +137,13 @@ socket.onmessage = event => {
     }
 }
 
-let formatTime = function (rawvalue) { //convert time in ms to hr:min:sec format
+let formatTime = function(rawvalue) { //convert time in ms to hr:min:sec format
     rawvalue = Math.round(rawvalue / 1000);
     let hr = 0,
         min = 0,
         sec = 0;
-    hr = parseInt(rawvalue / 3600);
-    min = parseInt((rawvalue - hr * 3600) / 60);
-    sec = rawvalue - hr * 3600 - min * 60;
+    hr = parseInt(rawvalue / 3600).toString().padStart(2, '0');
+    min = parseInt((rawvalue - hr * 3600) / 60).toString().padStart(2, '0');
+    sec = (rawvalue - hr * 3600 - min * 60).toString().padStart(2, '0');
     return hr > 0 ? `${hr}:${min}:${sec}` : `${min}:${sec}`;
 }

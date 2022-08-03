@@ -50,6 +50,7 @@ body {
     position: relative;
     left: 15vw;
     height: inherit;
+    z-index: 2;
     overflow: hidden;
     background-color: black;
     background-image: none;
@@ -57,6 +58,16 @@ body {
     background-position: center center;
     display: inline-block;
     background-size: cover;
+}
+
+#coverBeatmapInfo {
+    width: 40vw;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: inherit;
+    background-color: black;
+    opacity: 0;
 }
 
 #osuSpriteText {
@@ -114,7 +125,7 @@ body {
 }
 
 #innerPanel .beatmapInfo .textContent {
-    color: #848484;
+    color: #808080;
 }
 
 #innerPanel .beatmapInfo.left {
@@ -135,7 +146,7 @@ body {
 
 #logoContainer {
     position: fixed;
-    right: calc(1.5vw + 1.125vh);
+    right: calc(1.5vw + 0.75vh);
     bottom: 1.875vh;
     height: 5vh;
     width: 5vh;
@@ -161,4 +172,34 @@ body {
 #osuLogo {
     width: 5vh;
     height: 5vh;
+}
+
+.open {
+    animation: fade 0.2s linear;
+    transition: 0.2s;
+}
+
+.transit {
+    animation: clear 0.1s linear;
+}
+
+@keyframes fade {
+    0% {
+        color: rgba(0, 0, 0, 0);
+    }
+    100% {
+        color: #808080;
+    }
+}
+
+@keyframes clear {
+    0% {
+        opacity: 0;
+    }
+    50% {
+        opacity: 30%;
+    }
+    100% {
+        opacity: 0;
+    }
 }
