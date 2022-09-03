@@ -2,7 +2,7 @@ A old lazer style osu! tourney showcase interface using [gosumemory](https://git
 
 # Usage
 
-Add the folder to `static` folder in gosumemory directory. Then refer to gosumemory's readme for usage.
+Add the folder to `static` folder in gosumemory directory. Then refer to [gosumemory](https://github.com/l3lackShark/gosumemory)'s readme for usage.
 
 # URL Parameters
 
