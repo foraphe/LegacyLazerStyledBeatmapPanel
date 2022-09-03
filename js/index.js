@@ -2,6 +2,30 @@ let USE_FULLSCREEN_BG = true,
     FULLSCREEN_BACKGROUND_DIM = 0.25,
     EXPANDED = true,
     oldExpanded = true;
+
+function formatTime(rawvalue) { //convert time in ms to hr:min:sec format
+    rawvalue = Math.round(rawvalue / 1000);
+    let hr = 0,
+        min = 0,
+        sec = 0;
+    hr = parseInt(rawvalue / 3600).toString().padStart(2, '0');
+    min = parseInt((rawvalue - hr * 3600) / 60).toString().padStart(2, '0');
+    sec = (rawvalue - hr * 3600 - min * 60).toString().padStart(2, '0');
+    return hr > 0 ? `${hr}:${min}:${sec}` : `${min}:${sec}`;
+}
+
+function resetAnimation(element, className) { //reset css animation <className> on <element>
+    element.classList.remove(className);
+    element.offsetHeight;
+    element.classList.add(className);
+}
+
+function getQueryString(param) {
+    const url_string = decodeURI(window.location.href);
+    const url = new URL(url_string);
+    return url.searchParams.get(param);
+}
+
 if (getQueryString('bgSwitch') == 0) {
     USE_FULLSCREEN_BG = false;
 }
@@ -49,7 +73,7 @@ let ar = 0,
     sr = 0,
     bm = [null, null];
 
-if (!EXPANDED) {
+if (!EXPANDED) { //Disable expanded elements
     document.getElementById('outerPanel').style = 'width:25vw;left:37.5vw;';
     document.getElementById('innerPanel').style = 'width:25vw;left:0;';
     document.getElementById('dataBeatmapInfo').style = 'width:25vw;left:0;border:0.125vh solid white';
@@ -156,27 +180,4 @@ socket.onmessage = event => {
             resetAnimation(elementLength, 'open');
         }
     }
-}
-
-function formatTime(rawvalue) { //convert time in ms to hr:min:sec format
-    rawvalue = Math.round(rawvalue / 1000);
-    let hr = 0,
-        min = 0,
-        sec = 0;
-    hr = parseInt(rawvalue / 3600).toString().padStart(2, '0');
-    min = parseInt((rawvalue - hr * 3600) / 60).toString().padStart(2, '0');
-    sec = (rawvalue - hr * 3600 - min * 60).toString().padStart(2, '0');
-    return hr > 0 ? `${hr}:${min}:${sec}` : `${min}:${sec}`;
-}
-
-function resetAnimation(element, className) { //reset css animation <className> on <element>
-    element.classList.remove(className);
-    element.offsetHeight;
-    element.classList.add(className);
-}
-
-function getQueryString(param) {
-    const url_string = decodeURI(window.location.href);
-    const url = new URL(url_string);
-    return url.searchParams.get(param);
-}
+};
