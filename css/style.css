@@ -39,9 +39,9 @@ body {
 
 #innerPanel {
     transition: inherit;
-    width: 70vw;
+    width: 75vw;
     position: relative;
-    left: 13.5vw;
+    left: 11vw;
     height: inherit;
     background-color: #dbdbdb;
 }
@@ -134,7 +134,7 @@ body {
 
 #innerPanel .beatmapInfo.left {
     position: fixed;
-    left: 16.25vw;
+    left: 13.75vw;
     text-align: left;
     padding: 0;
     bottom: 2.25vh;
@@ -142,7 +142,7 @@ body {
 
 #innerPanel .beatmapInfo.right {
     position: fixed;
-    right: 16.25vw;
+    right: 13.75vw;
     text-align: right;
     padding: 0;
     bottom: 2.25vh;

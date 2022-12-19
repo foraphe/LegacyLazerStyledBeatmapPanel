@@ -71,7 +71,8 @@ let ar = 0,
     length = 0,
     bg = null,
     sr = 0,
-    bm = [null, null];
+    bm = [null, null],
+    mods = 0;
 
 if (!EXPANDED) { //Disable expanded elements
     document.getElementById('outerPanel').style = 'width:25vw;left:37.5vw;';
@@ -150,17 +151,17 @@ socket.onmessage = event => {
     if (EXPANDED) {
         if (data.menu.bm.stats.AR != ar) {
             ar = data.menu.bm.stats.AR;
-            elementAR.innerText = data.menu.bm.stats.AR == data.menu.bm.stats.memoryAR ? data.menu.bm.stats.AR : `${data.menu.bm.stats.AR}*`;
+            elementAR.innerText = data.menu.bm.stats.AR == data.menu.bm.stats.memoryAR ? data.menu.bm.stats.AR : `${data.menu.bm.stats.AR}(${data.menu.bm.stats.memoryAR})`;
             resetAnimation(elementAR, 'open');
         }
         if (data.menu.bm.stats.OD != od) {
             od = data.menu.bm.stats.OD;
-            elementOD.innerText = data.menu.bm.stats.OD == data.menu.bm.stats.memoryOD ? data.menu.bm.stats.OD : `${data.menu.bm.stats.OD}*`;
+            elementOD.innerText = data.menu.bm.stats.OD == data.menu.bm.stats.memoryOD ? data.menu.bm.stats.OD : `${data.menu.bm.stats.OD}(${data.menu.bm.stats.memoryOD})`;
             resetAnimation(elementOD, 'open');
         }
         if (data.menu.bm.stats.CS != cs) {
             cs = data.menu.bm.stats.CS;
-            elementCS.innerText = data.menu.bm.stats.CS == data.menu.bm.stats.memoryCS ? data.menu.bm.stats.CS : `${data.menu.bm.stats.CS}*`;
+            elementCS.innerText = data.menu.bm.stats.CS == data.menu.bm.stats.memoryCS ? data.menu.bm.stats.CS : `${data.menu.bm.stats.CS}(${data.menu.bm.stats.memoryCS})`;
             resetAnimation(elementCS, 'open');
         }
         if (data.menu.bm.stats.BPM.min != bpm[0] || data.menu.bm.stats.BPM.max != bpm[1]) {
@@ -174,9 +175,14 @@ socket.onmessage = event => {
             elementSR.innerText = data.menu.bm.stats.fullSR;
             resetAnimation(elementSR, 'open');
         }
-        if (data.menu.bm.time.mp3 != length) {
+        if (data.menu.bm.time.mp3 != length || data.menu.mods.num != mods) {
+            mods = data.menu.mods.num
             length = data.menu.bm.time.mp3;
-            elementLength.innerText = formatTime(data.menu.bm.time.mp3);
+            let timeModifier = 1;
+            console.log(data.menu.mods.str)
+            if (parseInt(data.menu.mods.num) & 64) timeModifier = 1.5;
+            if (parseInt(data.menu.mods.num) & 256) timeModifier = 0.75;
+            elementLength.innerText = formatTime(data.menu.bm.time.mp3 / timeModifier);
             resetAnimation(elementLength, 'open');
         }
     }
