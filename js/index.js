@@ -26,6 +26,11 @@ function getQueryString(param) {
     return url.searchParams.get(param);
 }
 
+function roundNumber(num, d) {
+    const mul = num * Math.pow(10, d);
+    return Math.round(mul) / Math.pow(10, d);
+}
+
 if (getQueryString('bgSwitch') == 0) {
     USE_FULLSCREEN_BG = false;
 }
@@ -72,7 +77,8 @@ let ar = 0,
     bg = null,
     sr = 0,
     bm = [null, null],
-    mods = 0;
+    mods = 0,
+    bid = 0;
 
 if (!EXPANDED) { //Disable expanded elements
     document.getElementById('outerPanel').style = 'width:25vw;left:37.5vw;';
@@ -171,15 +177,23 @@ socket.onmessage = event => {
             resetAnimation(elementBPM, 'open');
         }
         if (data.menu.bm.stats.fullSR != sr) {
+            bid = data.menu.bm.id;
             sr = data.menu.bm.stats.fullSR;
+            getStarRating(data.menu.bm.id, data.menu.mods.num)
+                .then(res => {
+                    if (res.beatmap_id != bid) return;
+                    elementSR.innerText = `${roundNumber(Number(res.difficultyrating), 2)} (${data.menu.bm.stats.fullSR} local)`
+                })
+                .then(err => {
+                    return;
+                })
             elementSR.innerText = data.menu.bm.stats.fullSR;
             resetAnimation(elementSR, 'open');
         }
         if (data.menu.bm.time.mp3 != length || data.menu.mods.num != mods) {
-            mods = data.menu.mods.num
+            mods = data.menu.mods.num;
             length = data.menu.bm.time.mp3;
             let timeModifier = 1;
-            console.log(data.menu.mods.str)
             if (parseInt(data.menu.mods.num) & 64) timeModifier = 1.5;
             if (parseInt(data.menu.mods.num) & 256) timeModifier = 0.75;
             elementLength.innerText = formatTime(data.menu.bm.time.mp3 / timeModifier);
