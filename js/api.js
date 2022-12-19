@@ -1,7 +1,10 @@
 const API_KEY = '';
 
 async function getStarRating(bid, mods) {
-    mods = mods || 0;
+    mods = Number(mods) || 0;
+
+    //TODO: api v1 sometimes return a star rating of 0, some investigation will be needed to fix the issue.
+
     let p = new Promise((resolve, reject) => {
         if (!API_KEY) reject('no api key is given');
         const req = new XMLHttpRequest();
