@@ -81,7 +81,8 @@ let ar = 0,
     sr = 0,
     bm = [null, null],
     mods = 0,
-    bid = 0;
+    bid = 0,
+    flagModChanged = true;
 
 if (!EXPANDED) { //Disable expanded elements
     document.getElementById('outerPanel').style = 'width:25vw;left:37.5vw;';
@@ -158,6 +159,10 @@ socket.onmessage = event => {
         image.src = url;
     }
     if (EXPANDED) {
+        if(data.menu.mods.num != mods){
+            flagModChanged = true;
+            mods = data.menu.mods.num;
+        }
         if (data.menu.bm.stats.AR != ar) {
             ar = data.menu.bm.stats.AR;
             elementAR.innerText = data.menu.bm.stats.AR == data.menu.bm.stats.memoryAR ? data.menu.bm.stats.AR : `${data.menu.bm.stats.AR}[${data.menu.bm.stats.memoryAR}] `;
@@ -179,7 +184,7 @@ socket.onmessage = event => {
             elementBPM.innerText = data.menu.bm.stats.BPM.min == data.menu.bm.stats.BPM.max ? data.menu.bm.stats.BPM.min : `${data.menu.bm.stats.BPM.min}~${data.menu.bm.stats.BPM.max}`;
             resetAnimation(elementBPM, 'open');
         }
-        if (data.menu.bm.stats.fullSR != sr) {
+        if (data.menu.bm.stats.fullSR != sr || flagModChanged) {
             bid = data.menu.bm.id;
             sr = data.menu.bm.stats.fullSR;
             getStarRating(data.menu.bm.id, data.menu.mods.num, API_KEY)
@@ -193,8 +198,7 @@ socket.onmessage = event => {
             elementSR.innerText = data.menu.bm.stats.fullSR;
             resetAnimation(elementSR, 'open');
         }
-        if (data.menu.bm.time.mp3 != length || data.menu.mods.num != mods) {
-            mods = data.menu.mods.num;
+        if (data.menu.bm.time.mp3 != length || flagModChanged) {
             length = data.menu.bm.time.mp3;
             let timeModifier = 1;
             if (parseInt(data.menu.mods.num) & 64) timeModifier = 1.5;
@@ -202,5 +206,6 @@ socket.onmessage = event => {
             elementLength.innerText = formatTime(data.menu.bm.time.mp3 / timeModifier);
             resetAnimation(elementLength, 'open');
         }
+        flagModChanged = false;
     }
 };
