@@ -1,7 +1,8 @@
 let USE_FULLSCREEN_BG = true,
     FULLSCREEN_BACKGROUND_DIM = 0.25,
     EXPANDED = true,
-    oldExpanded = true;
+    oldExpanded = true,
+    API_KEY = '';
 
 function formatTime(rawvalue) { //convert time in ms to hr:min:sec format
     rawvalue = Math.round(rawvalue / 1000);
@@ -42,6 +43,8 @@ if (getQueryString('expanded') == 0) {
     EXPANDED = false;
     oldExpanded = false;
 }
+
+API_KEY = getQueryString('apikey') || '';
 
 let socket = new ReconnectingWebSocket("ws://" + location.host + "/ws");
 
@@ -157,17 +160,17 @@ socket.onmessage = event => {
     if (EXPANDED) {
         if (data.menu.bm.stats.AR != ar) {
             ar = data.menu.bm.stats.AR;
-            elementAR.innerText = data.menu.bm.stats.AR == data.menu.bm.stats.memoryAR ? data.menu.bm.stats.AR : `${data.menu.bm.stats.AR}(${data.menu.bm.stats.memoryAR})`;
+            elementAR.innerText = data.menu.bm.stats.AR == data.menu.bm.stats.memoryAR ? data.menu.bm.stats.AR : `${data.menu.bm.stats.AR}[${data.menu.bm.stats.memoryAR}] `;
             resetAnimation(elementAR, 'open');
         }
         if (data.menu.bm.stats.OD != od) {
             od = data.menu.bm.stats.OD;
-            elementOD.innerText = data.menu.bm.stats.OD == data.menu.bm.stats.memoryOD ? data.menu.bm.stats.OD : `${data.menu.bm.stats.OD}(${data.menu.bm.stats.memoryOD})`;
+            elementOD.innerText = data.menu.bm.stats.OD == data.menu.bm.stats.memoryOD ? data.menu.bm.stats.OD : `${data.menu.bm.stats.OD}[${data.menu.bm.stats.memoryOD}] `;
             resetAnimation(elementOD, 'open');
         }
         if (data.menu.bm.stats.CS != cs) {
             cs = data.menu.bm.stats.CS;
-            elementCS.innerText = data.menu.bm.stats.CS == data.menu.bm.stats.memoryCS ? data.menu.bm.stats.CS : `${data.menu.bm.stats.CS}(${data.menu.bm.stats.memoryCS})`;
+            elementCS.innerText = data.menu.bm.stats.CS == data.menu.bm.stats.memoryCS ? data.menu.bm.stats.CS : `${data.menu.bm.stats.CS}[${data.menu.bm.stats.memoryCS}] `;
             resetAnimation(elementCS, 'open');
         }
         if (data.menu.bm.stats.BPM.min != bpm[0] || data.menu.bm.stats.BPM.max != bpm[1]) {
@@ -179,7 +182,7 @@ socket.onmessage = event => {
         if (data.menu.bm.stats.fullSR != sr) {
             bid = data.menu.bm.id;
             sr = data.menu.bm.stats.fullSR;
-            getStarRating(data.menu.bm.id, data.menu.mods.num)
+            getStarRating(data.menu.bm.id, data.menu.mods.num, API_KEY)
                 .then(res => {
                     if (res.beatmap_id != bid) return;
                     elementSR.innerText = `${roundNumber(Number(res.difficultyrating), 2)} (${data.menu.bm.stats.fullSR} local)`

@@ -6,11 +6,12 @@ Add the folder to `static` folder in gosumemory directory. Then refer to [gosume
 
 # URL Parameters
 
-| Name     | Value | Default | Note                                                       |
-| -------- | ----- | --------|----------------------------------------------------------- |
-| bgSwitch | 0,1   | 1       | Whether to show fullscreen BG of current beatmap           |
-| bgDim    | [0,1] | 0.25    | Darkening of the background                                |
-| expanded | 0,1   | 1       | Whether to show detailed information about current beatmap |
+| Name     | Value  | Default | Note                                                       |
+| -------- | ------ | --------|----------------------------------------------------------- |
+| bgSwitch | 0,1    | 1       | Whether to show fullscreen BG of current beatmap           |
+| bgDim    | [0,1]  | 0.25    | Darkening of the background                                |
+| expanded | 0,1    | 1       | Whether to show detailed information about current beatmap |
+| apikey   | String | ''      | osu! API v1 API key for retrieving online Star Rating      |
 
 # Disclaimer
 
