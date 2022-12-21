@@ -171,17 +171,17 @@ socket.onmessage = event => {
         }
         if (data.menu.bm.stats.AR != ar) {
             ar = data.menu.bm.stats.AR;
-            elementAR.innerText = data.menu.bm.stats.AR == data.menu.bm.stats.memoryAR ? data.menu.bm.stats.AR : `${data.menu.bm.stats.AR}[${data.menu.bm.stats.memoryAR}] `;
+            elementAR.innerText = data.menu.bm.stats.AR == data.menu.bm.stats.memoryAR ? data.menu.bm.stats.AR : `${roundNumber(data.menu.bm.stats.AR, 1)}[${data.menu.bm.stats.memoryAR}] `;
             resetAnimation(elementAR, 'open');
         }
         if (data.menu.bm.stats.OD != od) {
             od = data.menu.bm.stats.OD;
-            elementOD.innerText = data.menu.bm.stats.OD == data.menu.bm.stats.memoryOD ? data.menu.bm.stats.OD : `${data.menu.bm.stats.OD}[${data.menu.bm.stats.memoryOD}] `;
+            elementOD.innerText = data.menu.bm.stats.OD == data.menu.bm.stats.memoryOD ? data.menu.bm.stats.OD : `${roundNumber(data.menu.bm.stats.OD, 1)}[${data.menu.bm.stats.memoryOD}] `;
             resetAnimation(elementOD, 'open');
         }
         if (data.menu.bm.stats.CS != cs) {
             cs = data.menu.bm.stats.CS;
-            elementCS.innerText = data.menu.bm.stats.CS == data.menu.bm.stats.memoryCS ? data.menu.bm.stats.CS : `${data.menu.bm.stats.CS}[${data.menu.bm.stats.memoryCS}] `;
+            elementCS.innerText = data.menu.bm.stats.CS == data.menu.bm.stats.memoryCS ? data.menu.bm.stats.CS : `${roundNumber(data.menu.bm.stats.CS, 1)}[${data.menu.bm.stats.memoryCS}] `;
             resetAnimation(elementCS, 'open');
         }
         if (data.menu.bm.stats.BPM.min != bpm[0] || data.menu.bm.stats.BPM.max != bpm[1]) {
@@ -220,7 +220,7 @@ socket.onmessage = event => {
                         elementBPM.innerText = `${bpm[0]}`;
                     }
                     else {
-                        elementBPM.innerText = `${bpm[0]}~${bpm[1]} (${res.bpm})`
+                        elementBPM.innerText = `${bpm[0]}~${bpm[1]} (${Number(res.bpm) * timeModifier})`
                     }
                 })
                 .then(err => {
