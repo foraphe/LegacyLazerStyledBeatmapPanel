@@ -82,7 +82,8 @@ let ar = 0,
     bm = [null, null],
     mods = 0,
     bid = 0,
-    flagModChanged = true;
+    flagModChanged = true,
+    flagMapChanged = false;
 
 if (!EXPANDED) { //Disable expanded elements
     document.getElementById('outerPanel').style = 'width:25vw;left:37.5vw;';
@@ -129,7 +130,7 @@ socket.onmessage = event => {
         elementDiff.innerText = data.menu.bm.metadata.difficulty;
     }
     if (data.menu.bm.metadata.mapper != mapper) {
-        mapper = data.menu.bm.metadata.mapper
+        mapper = data.menu.bm.metadata.mapper;
         elementMapper.innerText = data.menu.bm.metadata.mapper;
     }
     if (data.menu.bm.path.full != bg) {
@@ -159,9 +160,14 @@ socket.onmessage = event => {
         image.src = url;
     }
     if (EXPANDED) {
-        if(data.menu.mods.num != mods){
+        //TODO: remove unnecessary conditions for these ifs and simplify code
+        if (data.menu.mods.num != mods) {
             flagModChanged = true;
             mods = data.menu.mods.num;
+        }
+        if (data.menu.bm.id != bid) {
+            flagMapChanged = true;
+            bid = data.menu.bm.id;
         }
         if (data.menu.bm.stats.AR != ar) {
             ar = data.menu.bm.stats.AR;
@@ -185,16 +191,7 @@ socket.onmessage = event => {
             resetAnimation(elementBPM, 'open');
         }
         if (data.menu.bm.stats.fullSR != sr || flagModChanged) {
-            bid = data.menu.bm.id;
             sr = data.menu.bm.stats.fullSR;
-            getStarRating(data.menu.bm.id, data.menu.mods.num, API_KEY)
-                .then(res => {
-                    if (res.beatmap_id != bid) return;
-                    elementSR.innerText = `${roundNumber(Number(res.difficultyrating), 2)} (${data.menu.bm.stats.fullSR} local)`
-                })
-                .then(err => {
-                    return;
-                })
             elementSR.innerText = data.menu.bm.stats.fullSR;
             resetAnimation(elementSR, 'open');
         }
@@ -206,6 +203,32 @@ socket.onmessage = event => {
             elementLength.innerText = formatTime(data.menu.bm.time.mp3 / timeModifier);
             resetAnimation(elementLength, 'open');
         }
+
+        if (flagMapChanged || flagModChanged) {
+            getStarRating(bid, mods, API_KEY)
+                .then(res => {
+                    if (res.beatmap_id != bid) return;
+                    elementSR.innerText = `${roundNumber(Number(res.difficultyrating), 2)} (${sr} local)`;
+
+                    //TODO: prevent repeatedly calculating modded length, or reuse code above
+                    let timeModifier = 1;
+                    if (parseInt(data.menu.mods.num) & 64) timeModifier = 1.5;
+                    if (parseInt(data.menu.mods.num) & 256) timeModifier = 0.75;
+                    elementLength.innerText = `${formatTime(length / timeModifier)} (${formatTime(Number(res.hit_length) * 1000 / timeModifier)} drain)`;
+
+                    if(bpm[0] == bpm[1]) {
+                        elementBPM.innerText = `${bpm[0]}`;
+                    }
+                    else {
+                        elementBPM.innerText = `${bpm[0]}~${bpm[1]} (${res.bpm})`
+                    }
+                })
+                .then(err => {
+                    return;
+                })
+        }
+
         flagModChanged = false;
+        flagMapChanged = false;
     }
 };
