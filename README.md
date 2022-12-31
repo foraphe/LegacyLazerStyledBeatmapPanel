@@ -3,6 +3,7 @@ A old lazer style osu! tourney showcase interface using [gosumemory](https://git
 # Usage
 
 Add the folder to `static` folder in gosumemory directory. Then refer to [gosumemory](https://github.com/l3lackShark/gosumemory)'s readme for usage.
+**Currently supports STD only**.
 
 # URL Parameters
 
@@ -12,6 +13,11 @@ Add the folder to `static` folder in gosumemory directory. Then refer to [gosume
 | bgDim    | [0,1]  | 0.25    | Darkening of the background                                |
 | expanded | 0,1    | 1       | Whether to show detailed information about current beatmap |
 | apikey   | String | ''      | osu! API v1 API key for retrieving online Star Rating      |
+
+# TODO
+
+- [ ] Support for other modes
+- [ ] Provider to read .osu file through gosumemory for when certain features doesn't work in certain modes (e.g. length/bpm doesn't work in mania)
 
 # Disclaimer
 
