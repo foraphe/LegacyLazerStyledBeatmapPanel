@@ -43,17 +43,17 @@ var gosumemoryUpdater = new Object({
                 }
                 if (data.menu.bm.stats.AR != live.difficulty.ar) {
                     live.difficulty.ar = data.menu.bm.stats.AR;
-                    elementAR.innerText = data.menu.bm.stats.AR == data.menu.bm.stats.memoryAR ? data.menu.bm.stats.AR : `${roundNumber(data.menu.bm.stats.AR, 1)}[${data.menu.bm.stats.memoryAR}] `;
+                    elementAR.innerText = data.menu.bm.stats.AR == data.menu.bm.stats.memoryAR ? data.menu.bm.stats.AR : `${utils.roundNumber(data.menu.bm.stats.AR, 1)}[${data.menu.bm.stats.memoryAR}] `;
                     utils.resetAnimation(elementAR, 'open');
                 }
                 if (data.menu.bm.stats.OD != live.difficulty.od) {
                     live.difficulty.od = data.menu.bm.stats.OD;
-                    elementOD.innerText = data.menu.bm.stats.OD == data.menu.bm.stats.memoryOD ? data.menu.bm.stats.OD : `${roundNumber(data.menu.bm.stats.OD, 1)}[${data.menu.bm.stats.memoryOD}] `;
+                    elementOD.innerText = data.menu.bm.stats.OD == data.menu.bm.stats.memoryOD ? data.menu.bm.stats.OD : `${utils.roundNumber(data.menu.bm.stats.OD, 1)}[${data.menu.bm.stats.memoryOD}] `;
                     utils.resetAnimation(elementOD, 'open');
                 }
                 if (data.menu.bm.stats.CS != live.difficulty.cs) {
                     live.difficulty.cs = data.menu.bm.stats.CS;
-                    elementCS.innerText = data.menu.bm.stats.CS == data.menu.bm.stats.memoryCS ? data.menu.bm.stats.CS : `${roundNumber(data.menu.bm.stats.CS, 1)}[${data.menu.bm.stats.memoryCS}] `;
+                    elementCS.innerText = data.menu.bm.stats.CS == data.menu.bm.stats.memoryCS ? data.menu.bm.stats.CS : `${utils.roundNumber(data.menu.bm.stats.CS, 1)}[${data.menu.bm.stats.memoryCS}] `;
                     utils.resetAnimation(elementCS, 'open');
                 }
                 if (data.menu.bm.stats.HP != live.difficulty.hp) {

@@ -19,7 +19,7 @@ if (utils.getQueryString('expanded') == 0) {
     config.EXPANDED = false;
 }
 
-const DEBUG = true;
+const DEBUG = false;
 
 let elementAR = document.getElementById('dataAr');
 let elementOD = document.getElementById('dataOd');
@@ -34,7 +34,7 @@ let elementSR = document.getElementById('dataSr');
 let elementBM = document.getElementById('dataBeatmap');
 let elementBGCover = document.getElementById('coverBeatmapInfo');
 
-//TODO: move bmObject definition out of index.js
+//TODO: move object definitions out of index.js
 function bmObject() {
     this.metadata = {
         title: '',
