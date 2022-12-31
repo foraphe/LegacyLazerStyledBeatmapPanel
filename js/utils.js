@@ -31,7 +31,7 @@ const utils = new Object({
         return Number(time) / this.timeModifier(mods);
     },
 
-    timeModifier: function(mods) {
+    timeModifier: function (mods) {
         let timeModifier = 1;
         if (Number(mods) & 64) timeModifier = 1.5;
         if (Number(mods) & 256) timeModifier = 0.75;
@@ -61,6 +61,95 @@ const utils = new Object({
             }
         });
         image.src = url;
+    },
+
+    odToWindow: function (mode, od) {
+        od = Number(od);
+        let window300 = -1;
+        switch (Number(mode)) {
+            case 0:
+                window300 = 80 - 6 * od;
+                break;
+            case 1:
+                window300 = 50 - 3 * od;
+                break;
+            case 3:
+                window300 = 64 - 3 * od;
+                break;
+            default:
+                break;
+        }
+        return window300;
+    },
+
+    windowToOd: function (mode, window) {
+        window = Number(window);
+        let od = -1;
+        switch (Number(mode)) {
+            case 0:
+                od = (80 - window) / 6;
+                break;
+            case 1:
+                od = (50 - window) / 3
+                break;
+            case 3:
+                od = (64 - window) / 3;
+                break;
+            default:
+                break;
+        }
+        return od;
+    },
+
+    calcModdedOd: function (mods, mode, od) {
+        //https://osu.ppy.sh/wiki/en/Beatmap/Overall_difficulty
+        od = Number(od);
+        mods = Number(mods);
+        if (mode == 2) return -1; //in CTB, OD is not used and doesn't have a formula in osu! wiki, so TODO here.
+
+        //calculate the effect ot HR/EZ
+        if (mods & 16) od = od * 1.4;
+        if (mods & 2) od = od / 2;
+        if (od > 10) od = 10;
+
+        //calculate the effect of DT/HT
+        let window300 = this.odToWindow(mode, od);
+        let timeModifier = this.timeModifier(mods);
+        window300 = window300 / timeModifier;
+        let newod = this.windowToOd(mode, window300);
+
+        return this.roundNumber(newod, 2)
+    },
+
+    calcModdedAr: function (mods, mode, ar) {
+        //https://osu.ppy.sh/wiki/en/Beatmap/Approach_rate
+        ar = Number(ar);
+        mods = Number(mods);
+        if (mode == 1 || mode == 3) return -1; //AR only presents in STD and CTB
+
+        //calculate the effect of HR/EZ
+        if (mods & 16) ar = ar * 1.4;
+        if (mods & 2) ar = ar / 2;
+        if (ar > 10) ar = 10;
+
+        //calculate the effect of DT/HT
+        let preempt = -1;
+        if (ar <= 5) {
+            preempt = 1800 - 120 * ar;
+        }
+        else {
+            preempt = 1950 - 150 * ar;
+        }
+        let timeModifier = this.timeModifier(mods);
+        preempt = preempt / timeModifier;
+        let newar = -1;
+        if (preempt >= 1200) {
+            newar = (1800 - preempt) / 120;
+        }
+        else {
+            newar = (1950 - preempt) / 150;
+        }
+
+        return this.roundNumber(newar, 2);
     }
 });
-
