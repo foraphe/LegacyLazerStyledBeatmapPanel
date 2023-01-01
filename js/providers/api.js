@@ -50,7 +50,7 @@ var api = new Object({
                         bpm: {
                             min: -1,
                             max: -1,
-                            avg: Number(res[0].bpm) * utils.timeModifier(mods)
+                            avg: utils.roundNumber(Number(res[0].bpm) * utils.timeModifier(mods), 2)
                         },
                         length: -1,
                         drain: utils.getModdedTime(Number(res[0].hit_length) * 1000, mods),

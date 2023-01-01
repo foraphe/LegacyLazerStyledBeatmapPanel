@@ -73,7 +73,6 @@ function Ticker(interval){
         return setInterval(this.doTick, interval);
     }
     this.doTick = function(){
-        if(DEBUG)console.log('ticker do tick');
         if (flagMapChanged || flagModChanged) {
             flagMapChanged = false;
             flagModChanged = false;
@@ -81,7 +80,7 @@ function Ticker(interval){
                 .then(res => {
                     if(res.metadata.bid != live.metadata.bid)return;
                     elementSR.innerText = `${res.difficulty.sr} (${live.difficulty.sr} local)`;
-                    elementLength.innerText = `${utils.formatTime(live.beatmap.length)} (${utils.formatTime(res.beatmap.drain)} drain)`;
+                    elementLength.innerText = `${utils.formatTime(liveModified.beatmap.length)} (${utils.formatTime(res.beatmap.drain)} drain)`;
                     if(live.beatmap.bpm.min != live.beatmap.bpm.max) {
                         elementBPM.innerText = `${live.beatmap.bpm.min}~${live.beatmap.bpm.max} (${res.beatmap.bpm.avg})`;
                     }
@@ -94,6 +93,7 @@ function Ticker(interval){
 }
 
 let live = new bmObject();
+let liveModified = new bmObject();
 let ticker = new Ticker(100);
 
 //TODO: put the styles into appropriate css entries and update classList instead

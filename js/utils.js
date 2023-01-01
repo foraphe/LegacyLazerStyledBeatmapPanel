@@ -27,15 +27,15 @@ const utils = new Object({
         element.classList.add(className);
     },
 
-    getModdedTime: function (time, mods) {
-        return Number(time) / this.timeModifier(mods);
-    },
-
     timeModifier: function (mods) {
         let timeModifier = 1;
         if (Number(mods) & 64) timeModifier = 1.5;
         if (Number(mods) & 256) timeModifier = 0.75;
         return timeModifier;
+    },
+
+    getModdedTime: function (time, mods) {
+        return Number(time) / this.timeModifier(mods);
     },
 
     updateBgAsync: function (path) {

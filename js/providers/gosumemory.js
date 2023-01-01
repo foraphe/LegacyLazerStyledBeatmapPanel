@@ -72,7 +72,8 @@ var gosumemoryUpdater = new Object({
                 }
                 if (data.menu.bm.time.mp3 != live.beatmap.length || flagModChanged) {
                     live.beatmap.length = data.menu.bm.time.mp3;
-                    elementLength.innerText = utils.formatTime(utils.getModdedTime(data.menu.bm.time.mp3));
+                    liveModified.beatmap.length = utils.getModdedTime(data.menu.bm.time.mp3, data.menu.mods.num);
+                    elementLength.innerText = utils.formatTime(liveModified.beatmap.length);
                     utils.resetAnimation(elementLength, 'open');
                 }
             }
