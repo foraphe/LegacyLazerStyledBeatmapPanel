@@ -16,9 +16,9 @@ var gosumemoryUpdater = new Object({
             if (data.menu.gameMode !== 0) return;
 
             if (data.menu.bm.metadata.artist != live.metadata.artist || data.menu.bm.metadata.title != live.metadata.title) {
-                live.metadata.title = data.menu.bm.metadata.artist;
-                live.metadata.artist = data.menu.bm.metadata.title;
-                elementBM.innerText = `${live.metadata.title} - ${live.metadata.artist}`;
+                live.metadata.title = data.menu.bm.metadata.title;
+                live.metadata.artist = data.menu.bm.metadata.artist;
+                elementBM.innerText = `${live.metadata.artist} - ${live.metadata.title}`;
             }
             if (data.menu.bm.metadata.difficulty != live.metadata.diff) {
                 live.metadata.diff = data.menu.bm.metadata.difficulty;

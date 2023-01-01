@@ -107,7 +107,7 @@ const utils = new Object({
         mods = Number(mods);
         if (mode == 2) return -1; //in CTB, OD is not used and doesn't have a formula in osu! wiki, so TODO here.
 
-        //calculate the effect ot HR/EZ
+        //calculate the effect of HR/EZ
         if (mods & 16) od = od * 1.4;
         if (mods & 2) od = od / 2;
         if (od > 10) od = 10;
