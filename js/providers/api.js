@@ -26,7 +26,7 @@ var api = new Object({
                 if (this.status != 200) reject(`request failed with a status code of ${this.status}`);
                 let res = JSON.parse(this.responseText);
                 if (!res || !res[0]) reject('received no data for given beatmap');
-                //TODO: explicitly define ret as a bmObject
+                //TODO: explicitly define ret as a Beatmap
                 const ret = {
                     difficulty: {
                         ar: Number(res[0].diff_approach),
@@ -54,7 +54,8 @@ var api = new Object({
                         },
                         length: -1,
                         drain: utils.getModdedTime(Number(res[0].hit_length) * 1000, mods),
-                        mods: mods
+                        mods: mods,
+                        bgPath: ''
                     }
                 }
                 resolve(ret);

@@ -35,7 +35,7 @@ let elementBM = document.getElementById('dataBeatmap');
 let elementBGCover = document.getElementById('coverBeatmapInfo');
 
 //TODO: move object definitions out of index.js
-function bmObject() {
+function Beatmap() {
     this.metadata = {
         title: '',
         artist: '',
@@ -92,8 +92,8 @@ function Ticker(interval){
     }
 }
 
-let live = new bmObject();
-let liveModified = new bmObject();
+let live = new Beatmap();
+let liveModified = new Beatmap();
 let ticker = new Ticker(100);
 
 //TODO: put the styles into appropriate css entries and update classList instead
