@@ -5,6 +5,7 @@ var api = new Object({
         if(DEBUG) console.log(`[api]Using API key ${this.apikey}`);
     },
     update: async function (bid, mods) {
+        if(!this.apikey)return;
         mods = Number(mods) || 0;
     
         //Some mods will cause osu! api to return a SR of 0, so we only count SR-affcting mods here
