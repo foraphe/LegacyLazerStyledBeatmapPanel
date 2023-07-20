@@ -5,6 +5,8 @@ let config = {
     API_KEY: ''
 }
 
+const DEBUG = false;
+
 let flagMapChanged = false;
 let flagModChanged = false;
 
@@ -18,8 +20,6 @@ if (utils.getQueryString('bgDim') != undefined) {
 if (utils.getQueryString('expanded') == 0) {
     config.EXPANDED = false;
 }
-
-const DEBUG = false;
 
 let elementAR = document.getElementById('dataAr');
 let elementOD = document.getElementById('dataOd');

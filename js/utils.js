@@ -41,16 +41,16 @@ const utils = new Object({
     updateBgAsync: function (path) {
         //Several characters are not escaped by encodeURIComponent
         let url = `http://${location.host}/Songs/${encodeURIComponent(path.replace(/\\/g, '/'))}`
-            .replace(/-/g, "%2D")
-            .replace(/_/g, "%5F")
-            .replace(/\./g, "%2E")
-            .replace(/!/g, "%21")
-            .replace(/~/g, "%7E")
-            .replace(/\'/g, "%27")
-            .replace(/\(/g, "%28")
-            .replace(/\)/g, "%29");
+            .replace(/-/g, '%2D')
+            .replace(/_/g, '%5F')
+            .replace(/\./g, '%2E')
+            .replace(/!/g, '%21')
+            .replace(/~/g, '%7E')
+            .replace(/\'/g, '%27')
+            .replace(/\(/g, '%28')
+            .replace(/\)/g, '%29');
         let image = new Image();
-        image.addEventListener("load", () => {
+        image.addEventListener('load', () => {
             elementBG.style.backgroundImage = `linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.5)),url(${url})`;
             this.resetAnimation(elementBGCover, 'transit');
             if (config.USE_FULLSCREEN_BG) {
