@@ -63,8 +63,9 @@ var api = new Object({
                 resolve(ret);
             };
     
-            req.open('GET',
-                `https://osu.ppy.sh/api/get_beatmaps?k=${this.apikey}&b=${bid}&m=0&mods=${mods}`);
+            let url = `https://osu.ppy.sh/api/get_beatmaps?k=${this.apikey}&b=${bid}&m=0&mods=${mods}`
+            if(DEBUG) console.log(`[api] retrieving beatmap info from ${url}`);
+            req.open('GET', url);
             req.send();
         });
     

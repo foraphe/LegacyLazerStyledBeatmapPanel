@@ -37,9 +37,9 @@ let osuParser = {
             },
             beatmap: {
                 mode: content.Mode,
-                bpm: this.getBPM(content.timings),
-                length: -1,
-                drain: -1,
+                bpm: this.getBPM(content.timings) || { min: -1, max: -1, avg: -1 },
+                length: this.getTotalTime(content) || -1,
+                drain: this.getDrainTime(content) || -1,
                 mods: -1,
                 bgPath: '',
             },
@@ -47,9 +47,7 @@ let osuParser = {
         };
 
         if (DEBUG)
-            console.log(
-                `[osuFileParser] Parsed Beamap:\n${JSON.stringify(bm)}`
-            );
+            console.log(`[osuFileParser] Parsed Beamap:\n${JSON.stringify(bm)}`);
 
         return bm;
     },
@@ -73,13 +71,15 @@ let osuParser = {
         Object.keys(tmp.colors).map(
             (i) => (tmp.colors[i] = tmp.colors[i].split(','))
         );
-        tmp.Bookmarks = tmp.Bookmarks.split(',');
+        if (tmp.Bookmarks) tmp.Bookmarks = tmp.Bookmarks.split(',');
 
         return tmp;
     },
 
     readLine: function (line, tmp) {
         line = line || '';
+        if (line.match(/osu file format v[0-9]+/)) return;
+
         let sectionMatch = line.match(this.sectionReg);
         if (sectionMatch) {
             this.updateState(sectionMatch[1]);
@@ -108,6 +108,7 @@ let osuParser = {
                     if (color) {
                         tmp.colors[color[1]] = color[2];
                     }
+                    break;
                 case 7:
                     let hit = line.trim().split(',');
                     if (hit) tmp.objs.push(hit);
@@ -127,23 +128,48 @@ let osuParser = {
             avg: -1,
         };
 
+        let bpmList = {},
+            lastBegin = 0, lastBPM = -1;
+
         for (let i of timings) {
             if (i[1] > '0') {
-                let currentBPM = utils.roundNumber(60000 / Number(i[1]), 2);
+                if (lastBPM) {
+                    if (!bpmList[lastBPM]) bpmList[lastBPM] = 0;
+                    bpmList[lastBPM] += Number(i[0]) - lastBegin;
+                }
+                let currentBPM = lastBPM = utils.roundNumber(60000 / Number(i[1]), 2);
                 if (currentBPM < bpm.min) bpm.min = currentBPM;
                 if (currentBPM > bpm.max) bpm.max = currentBPM;
+                lastBegin = Number(i[0]);
             }
         }
         if (bpm.min == 2e9) bpm.min = -1;
+        bpm.avg = Object.keys(bpmList).reduce((a, b) => bpmList[a] > bpmList[b] ? a : b);
         return bpm;
     },
 
-    getDrainTime: function () {
-        //TODO: compute drain time (last note - first note) - break times
+    getTotalTime: function (content) {
+        let first = Number(content.objs[0][2]) || 0, last = Number(content.objs[content.objs.length - 1][2]);
+        if (DEBUG) console.log(`[osuFileParser] hit objects begin at ${first}, end at ${last}, total time ${last - first}`);
+        return last - first;
+    },
+
+    getDrainTime: function (content) {
+        let breakLength = 0;
+        for (let line of content.events) {
+            if (line[0] == '2' || line[0].toLowerCase == 'break') {
+                breakLength += Number(line[2]) - Number(line[1]);
+            }
+        }
+        if (DEBUG) console.log(`[osuFileParser] total break time length: ${breakLength}`)
+
+        return this.getTotalTime(content) - breakLength;
     },
 
     read: async function (addr) {
+        if (DEBUG) console.log(`[osuFileParser] reading ${addr}`);
+
         let data = await fetch(addr);
-        return this.toBeatmap(this.parseFile(await data.text()));
+        return this.toBeatmap(await this.parseFile(await data.text()));
     },
 };
