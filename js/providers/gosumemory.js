@@ -77,6 +77,7 @@ var gosumemoryUpdater = new Object({
                     utils.resetAnimation(elementLength, 'open');
                 }
             }
+            live.original = utils.deepCopy(data);
         };
     }
 })

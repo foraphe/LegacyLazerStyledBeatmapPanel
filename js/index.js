@@ -21,6 +21,8 @@ if (utils.getQueryString('expanded') == 0) {
     config.EXPANDED = false;
 }
 
+if(DEBUG) console.log(`[main] configuration: ${JSON.stringify(config)}`);
+
 let elementAR = document.getElementById('dataAr');
 let elementOD = document.getElementById('dataOd');
 let elementCS = document.getElementById('dataCs');
@@ -34,68 +36,6 @@ let elementSR = document.getElementById('dataSr');
 let elementBM = document.getElementById('dataBeatmap');
 let elementBGCover = document.getElementById('coverBeatmapInfo');
 
-//TODO: move object definitions out of index.js
-function Beatmap() {
-    this.metadata = {
-        title: '',
-        artist: '',
-        source: '',
-        tags: [],
-        bid: '',
-        sid: '',
-        diff: '',
-        creator: ''
-    }
-    this.difficulty = {
-        ar: 0,
-        od: 0,
-        cs: 0,
-        hp: 0,
-        sr: 0
-    }
-    this.beatmap=  {
-        mode: -1,
-        bpm: {
-            min: 0,
-            max: 0,
-            avg: 0
-        },
-        length: 0,
-        drain: 0,
-        mods: 0,
-        bgPath: ''
-    }
-
-}
-
-function Ticker(interval){
-    this.run = function(){
-        return setInterval(this.doTick, interval);
-    }
-    this.doTick = function(){
-        if (flagMapChanged || flagModChanged) {
-            flagMapChanged = false;
-            flagModChanged = false;
-            api.update(live.metadata.bid, live.beatmap.mods)
-                .then(res => {
-                    if(res.metadata.bid != live.metadata.bid)return;
-                    elementSR.innerText = `${res.difficulty.sr} (${live.difficulty.sr} local)`;
-                    elementLength.innerText = `${utils.formatTime(liveModified.beatmap.length)} (${utils.formatTime(res.beatmap.drain)} drain)`;
-                    if(live.beatmap.bpm.min != live.beatmap.bpm.max) {
-                        elementBPM.innerText = `${live.beatmap.bpm.min}~${live.beatmap.bpm.max} (${res.beatmap.bpm.avg})`;
-                    }
-                })
-                .then(err =>{
-                    if(err)console.log(`[api]error: ${err}`);
-                })
-        }
-    }
-}
-
-let live = new Beatmap();
-let liveModified = new Beatmap();
-let ticker = new Ticker(100);
-
 //TODO: put the styles into appropriate css entries and update classList instead
 if (!config.EXPANDED) {
     document.getElementById('outerPanel').style = 'width:25vw;left:37.5vw;';
@@ -106,6 +46,10 @@ if (!config.EXPANDED) {
     document.getElementsByClassName('right')[0].style = 'display:none;';
     document.getElementById('osuLogo').style = 'display:none;';
 }
+
+let live = new Beatmap();
+let liveModified = new Beatmap();
+let ticker = new Ticker(100);
 
 api.init();
 gosumemoryUpdater.run();

@@ -4,6 +4,19 @@ const utils = new Object({
         return Math.round(mul) / Math.pow(10, d);
     },
 
+    escape(str) {
+        str = encodeURIComponent(str.replace(/\\/g, '/'))
+            .replace(/-/g, '%2D')
+            .replace(/_/g, '%5F')
+            .replace(/\./g, '%2E')
+            .replace(/!/g, '%21')
+            .replace(/~/g, '%7E')
+            .replace(/\'/g, '%27')
+            .replace(/\(/g, '%28')
+            .replace(/\)/g, '%29');
+        return str;
+    },
+
     getQueryString: function (param) {
         const url_string = decodeURI(window.location.href);
         const url = new URL(url_string);
@@ -39,28 +52,20 @@ const utils = new Object({
     },
 
     updateBgAsync: function (path) {
-        //Several characters are not escaped by encodeURIComponent
-        let url = `http://${location.host}/Songs/${encodeURIComponent(path.replace(/\\/g, '/'))}`
-            .replace(/-/g, '%2D')
-            .replace(/_/g, '%5F')
-            .replace(/\./g, '%2E')
-            .replace(/!/g, '%21')
-            .replace(/~/g, '%7E')
-            .replace(/\'/g, '%27')
-            .replace(/\(/g, '%28')
-            .replace(/\)/g, '%29');
+        let url = `http://${location.host}/Songs/${utils.escape(path)}`;
+
         let image = new Image();
+        image.src = url;
         image.addEventListener('load', () => {
             elementBG.style.backgroundImage = `linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.5)),url(${url})`;
             this.resetAnimation(elementBGCover, 'transit');
             if (config.USE_FULLSCREEN_BG) {
-                body.style.backgroundImage = `linear-gradient(rgba(0, 0, 0, ${config.FULLSCREEN_BACKGROUND_DIM}),rgba(0, 0, 0, ${config.FULLSCREEN_BACKGROUND_DIM})),url(${url})`;
+                body.style.backgroundImage = `linear-gradient(rgba(0, 0, 0, ${config.FULLSCREEN_BACKGROUND_DIM}),rgba(0, 0, 0, ${config.FULLSCREEN_BACKGROUND_DIM})), url(\'${url}\')`;
             } else {
                 body.style.backgroundImage = 'none';
                 body.style.backgroundColor = 'rgba(255, 255, 255, 0)';
             }
         });
-        image.src = url;
     },
 
     odToWindow: function (mode, od) {
@@ -151,5 +156,9 @@ const utils = new Object({
         }
 
         return this.roundNumber(newar, 2);
+    },
+
+    deepCopy(obj) {
+        return JSON.parse(JSON.stringify(obj));
     }
 });
