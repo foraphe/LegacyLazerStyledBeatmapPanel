@@ -1,12 +1,19 @@
 let osuParser = {
     state: -1,
-    states: ['general', 'editor', 'metadata', 'difficulty', 'events', 'timingpoints', 'colours', 'hitobjects'],
+    states: [
+        'general',
+        'editor',
+        'metadata',
+        'difficulty',
+        'events',
+        'timingpoints',
+        'colours',
+        'hitobjects',
+    ],
     keyValReg: /^([a-zA-Z0-9]+)[ ]*:[ ]*(.+)$/,
     sectionReg: /^\[([0-9A-Za-z]+)\]$/,
 
-    init: function () {
-
-    },
+    init: function () { },
 
     toBeatmap(content) {
         let bm = new Beatmap();
@@ -22,11 +29,11 @@ let osuParser = {
                 title: content.Title || '',
                 artist: content.Artist || '',
                 source: content.Source || '',
-                tags: (content.Tags || ''),
+                tags: content.Tags || '',
                 bid: Number(content.BeatmapID) || -1,
                 sid: Number(content.BeatmapSetID) || -1,
                 diff: content.Version || '',
-                creator: content.Creator || ''
+                creator: content.Creator || '',
             },
             beatmap: {
                 mode: content.Mode,
@@ -34,32 +41,38 @@ let osuParser = {
                 length: -1,
                 drain: -1,
                 mods: -1,
-                bgPath: ''
-            }
-        }
+                bgPath: '',
+            },
+            original: JSON.parse(JSON.stringify(content))
+        };
 
-        if (DEBUG) console.log(`[osuFileParser] Parsed Beamap:\n${JSON.stringify(bm)}`);
+        if (DEBUG)
+            console.log(
+                `[osuFileParser] Parsed Beamap:\n${JSON.stringify(bm)}`
+            );
 
         return bm;
     },
 
-    readFile: function (content) {
+    parseFile: function (content) {
         let tmp = {
             timings: [],
             objs: [],
             events: [],
-            colors: {}
+            colors: {},
         };
         content = content || '';
 
         content = content.split(/\r?\n/);
 
-        content.forEach(line => {
+        content.forEach((line) => {
             if (line.substr(0, 2) == '//' || !line);
             else this.readLine(line, tmp);
         }, this);
 
-        Object.keys(tmp.colors).map(i => tmp.colors[i] = tmp.colors[i].split(','));
+        Object.keys(tmp.colors).map(
+            (i) => (tmp.colors[i] = tmp.colors[i].split(','))
+        );
         tmp.Bookmarks = tmp.Bookmarks.split(',');
 
         return tmp;
@@ -77,7 +90,7 @@ let osuParser = {
                 case 1:
                 case 2:
                 case 3:
-                    let keyValPair = line.match(this.keyValReg)
+                    let keyValPair = line.match(this.keyValReg);
                     if (keyValPair) {
                         tmp[keyValPair[1]] = keyValPair[2];
                     }
@@ -91,7 +104,7 @@ let osuParser = {
                     if (timing) tmp.timings.push(timing);
                     break;
                 case 6:
-                    let color = line.match(this.keyValReg)
+                    let color = line.match(this.keyValReg);
                     if (color) {
                         tmp.colors[color[1]] = color[2];
                     }
@@ -111,7 +124,7 @@ let osuParser = {
         let bpm = {
             min: 2e9,
             max: -1,
-            avg: -1
+            avg: -1,
         };
 
         for (let i of timings) {
@@ -129,8 +142,8 @@ let osuParser = {
         //TODO: compute drain time (last note - first note) - break times
     },
 
-    read: async function(addr) {
-        let raw = await fetch(addr);
-        return this.toBeatmap(this.readFile(raw));
-    }
+    read: async function (addr) {
+        let data = await fetch(addr);
+        return this.toBeatmap(this.parseFile(await data.text()));
+    },
 };

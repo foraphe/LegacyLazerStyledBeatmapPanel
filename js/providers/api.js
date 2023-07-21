@@ -57,7 +57,8 @@ var api = new Object({
                         drain: utils.getModdedTime(Number(res[0].hit_length) * 1000, mods),
                         mods: mods,
                         bgPath: ''
-                    }
+                    },
+                    original: utils.deepCopy(res[0])
                 }
                 resolve(ret);
             };

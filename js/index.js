@@ -45,15 +45,15 @@ function Beatmap() {
         sid: '',
         diff: '',
         creator: ''
-    }
+    };
     this.difficulty = {
         ar: 0,
         od: 0,
         cs: 0,
         hp: 0,
         sr: 0
-    }
-    this.beatmap=  {
+    };
+    this.beatmap = {
         mode: -1,
         bpm: {
             min: 0,
@@ -64,30 +64,39 @@ function Beatmap() {
         drain: 0,
         mods: 0,
         bgPath: ''
-    }
-
+    };
+    this.original = {};
 }
 
-function Ticker(interval){
-    this.run = function(){
+function Ticker(interval) {
+    this.run = function () {
         return setInterval(this.doTick, interval);
     }
-    this.doTick = function(){
+    this.doTick = function () {
         if (flagMapChanged || flagModChanged) {
             flagMapChanged = false;
             flagModChanged = false;
-            api.update(live.metadata.bid, live.beatmap.mods)
-                .then(res => {
-                    if(res.metadata.bid != live.metadata.bid)return;
-                    elementSR.innerText = `${res.difficulty.sr} (${live.difficulty.sr} local)`;
-                    elementLength.innerText = `${utils.formatTime(liveModified.beatmap.length)} (${utils.formatTime(res.beatmap.drain)} drain)`;
-                    if(live.beatmap.bpm.min != live.beatmap.bpm.max) {
-                        elementBPM.innerText = `${live.beatmap.bpm.min}~${live.beatmap.bpm.max} (${res.beatmap.bpm.avg})`;
-                    }
-                })
-                .then(err =>{
-                    if(err)console.log(`[api]error: ${err}`);
-                })
+            if (config.API_KEY) {
+                api.update(live.metadata.bid, live.beatmap.mods)
+                    .then(res => {
+                        if (res.metadata.bid != live.metadata.bid) return;
+                        elementSR.innerText = `${res.difficulty.sr} (${live.difficulty.sr} local)`;
+                        elementLength.innerText = `${utils.formatTime(liveModified.beatmap.length)} (${utils.formatTime(res.beatmap.drain)} drain)`;
+                        if (live.beatmap.bpm.min != live.beatmap.bpm.max) {
+                            elementBPM.innerText = `${live.beatmap.bpm.min}~${live.beatmap.bpm.max} (${res.beatmap.bpm.avg})`;
+                        }
+                    })
+                    .then(err => {
+                        if (err) console.log(`[api]error: ${err}`);
+                    })
+            }
+            else {
+                osuParser.read(`http://${location.host}/Songs/${encodeURIComponent(live.original.menu.bm.path.folder)}/${live.original.menu.bm.path.file}`)
+                    .then((res) => {
+                        if (res.metadata.bid != live.metadata.bid) return;
+                        //TODO: calculate drain time, BPM(avg or longest duration) and update display values
+                    })
+            }
         }
     }
 }

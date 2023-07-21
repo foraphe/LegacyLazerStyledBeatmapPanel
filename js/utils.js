@@ -40,15 +40,8 @@ const utils = new Object({
 
     updateBgAsync: function (path) {
         //Several characters are not escaped by encodeURIComponent
-        let url = `http://${location.host}/Songs/${encodeURIComponent(path.replace(/\\/g, '/'))}`
-            .replace(/-/g, '%2D')
-            .replace(/_/g, '%5F')
-            .replace(/\./g, '%2E')
-            .replace(/!/g, '%21')
-            .replace(/~/g, '%7E')
-            .replace(/\'/g, '%27')
-            .replace(/\(/g, '%28')
-            .replace(/\)/g, '%29');
+        let url = `http://${location.host}/Songs/${encodeURIComponent(this.escape(path))}`;
+
         let image = new Image();
         image.addEventListener('load', () => {
             elementBG.style.backgroundImage = `linear-gradient(rgba(0, 0, 0, 0.5),rgba(0, 0, 0, 0.5)),url(${url})`;
@@ -151,5 +144,25 @@ const utils = new Object({
         }
 
         return this.roundNumber(newar, 2);
+    },
+
+    escape(str) {
+        str = str || '';
+
+        return str.replace(/\\/g, '/')
+        /*
+            .replace(/-/g, '%2D')
+            .replace(/_/g, '%5F')
+            .replace(/\./g, '%2E')
+            .replace(/!/g, '%21')
+            .replace(/~/g, '%7E')
+            .replace(/\'/g, '%27')
+            .replace(/\(/g, '%28')
+            .replace(/\)/g, '%29');
+        */
+    },
+
+    deepCopy(obj) {
+        return JSON.parse(JSON.stringify(obj));
     }
 });
