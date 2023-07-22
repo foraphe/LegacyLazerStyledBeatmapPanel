@@ -21,7 +21,7 @@ if (utils.getQueryString('expanded') == 0) {
     config.EXPANDED = false;
 }
 
-if(DEBUG) console.log(`[main] configuration: ${JSON.stringify(config)}`);
+if (DEBUG) console.log(`[main] configuration: ${JSON.stringify(config)}`);
 
 let elementAR = document.getElementById('dataAr');
 let elementOD = document.getElementById('dataOd');
@@ -50,6 +50,34 @@ if (!config.EXPANDED) {
 let live = new Beatmap();
 let liveModified = new Beatmap();
 let ticker = new Ticker(100);
+
+let wasmReady = false;
+
+const imports = {
+    env: {
+        rosuCalcSR: function(buf, mods) {}
+    }
+}
+/*
+fetch(`${location.href}/js/providers/rosu/rosu_pp_bg.wasm`)
+    .then(value => value.arrayBuffer().then(arr => {
+        WebAssembly.instantiate(arr, imports)
+            .then(res => {
+                rosuCalcSR = res.instance.exports.calculate_sr;
+                wasmMemory = res.instance.exports.memory;
+                wasmModule = res.instance;
+                wasmReady = true;
+                console.log(`wasm ready: ${wasmReady}`);
+            })
+    }))
+*/
+
+window.onload = () => {
+    __wbg_init();
+    wasmReady = true;
+}
+
+
 
 api.init();
 gosumemoryUpdater.run();

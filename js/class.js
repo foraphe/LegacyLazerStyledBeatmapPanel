@@ -62,7 +62,23 @@ function Ticker(interval) {
                         if (res.beatmap.drain) {
                             elementLength.innerText = `${utils.formatTime(liveModified.beatmap.length)} (${utils.formatTime(res.beatmap.drain)} drain)`;
                         }
-                    })
+                    });
+
+                if (!wasmReady) return;
+
+                fetch(`http://${location.host}/Songs/${utils.escape(live.original.menu.bm.path.folder)}/${live.original.menu.bm.path.file}`)
+                    .then(res => {
+                        res.text()
+                            .then(text => {
+                                if(DEBUG) console.log(`[SRCalculator]read ${text.length} bytes, calculating with mod enum ${live.beatmap.mods}`);
+                                text.trim();
+                                let u8arr = new TextEncoder().encode(text);
+
+                                let sr = calculate_sr(u8arr, live.beatmap.mods);
+
+                                elementSR.innerText = `${utils.roundNumber(sr, 2)} (${live.difficulty.sr} local)`;
+                            });
+                    });
             }
         }
     }
