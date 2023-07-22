@@ -53,9 +53,8 @@ let ticker = new Ticker(100);
 
 let wasmReady = false;
 
-window.onload = () => {
-    __wbg_init();
-    wasmReady = true;
+window.onload = async () => {
+    __wbg_init().then(() => wasmReady = true);
 }
 
 api.init();

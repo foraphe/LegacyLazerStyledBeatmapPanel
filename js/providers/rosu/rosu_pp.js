@@ -101,7 +101,7 @@ async function __wbg_init(input) {
     if (wasm !== undefined) return wasm;
 
     if (typeof input === 'undefined') {
-        input = new URL(`${location.href}/js/providers/rosu/rosu_pp_bg.wasm`);
+        input = new URL(`${window.location.protocol}//${window.location.host}${window.location.pathname}js/providers/rosu/rosu_pp_bg.wasm`);
     }
     const imports = __wbg_get_imports();
 
