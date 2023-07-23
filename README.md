@@ -1,24 +1,27 @@
-A old lazer styled osu! beatmap info panel using [gosumemory](https://github.com/l3lackShark/gosumemory). 
+A old lazer styled osu! beatmap info panel to use with [gosumemory](https://github.com/l3lackShark/gosumemory). 
 
-# Usage
+### Usage
 
-Add the folder to `static` folder in gosumemory directory. Then refer to [gosumemory](https://github.com/l3lackShark/gosumemory)'s readme for usage.
+Add the folder to `static` folder in gosumemory directory, then refer to [gosumemory](https://github.com/l3lackShark/gosumemory)'s README for usage.
 **Currently supports STD only**.
 
-# URL Parameters
+If an API v1 key is provided via URL parameters (see below), the panel will try to look up for some information (drain time, online SR, etc.) from osu! API. If not, these values will be calculated locally using the beatmap's `.osu` file. The local calculation of Online SR is implemented using a wasm version of [rosu-pp](https://github.com/MaxOhn/rosu-pp) (commit `68050f7`). Check `rosu-pp.patch` in the repo for details.
 
-| Name     | Value  | Default | Note                                                           |
-| -------- | ------ | --------|--------------------------------------------------------------- |
-| bgSwitch | 0,1    | 1       | Whether to show fullscreen BG of current beatmap               |
-| bgDim    | [0,1]  | 0.25    | Darkening of the background                                    |
-| expanded | 0,1    | 1       | Whether to show detailed information about the current beatmap |
-| apikey   | String | ''      | osu! API v1 API key for retrieving online Star Rating          |
+### URL Parameters
 
-# TODO
+| Name     |   Value    | Default | Note                                                           |
+| -------- | ---------- | --------|--------------------------------------------------------------- |
+| bgSwitch | 0 or 1     | 1       | Whether to show fullscreen BG of current beatmap               |
+| bgDim    | range[0,1] | 0.25    | Darkening of the background                                    |
+| expanded | 0 or 1     | 1       | Whether to show detailed information about the current beatmap |
+| apikey   | String     | ''      | osu! API v1 API key for extra information on the panel         |
+
+### TODO
 
 - [ ] Support for other modes
-- [ ] Provider to read .osu file through gosumemory's built-in web server for when certain features don't work in certain modes (e.g. length/bpm don't work in mania)
+- [x] Provider to read .osu file through gosumemory's built-in web server for when certain features don't work in certain modes (e.g. length/bpm don't work in mania)
+- [ ] Pure JS implementation of online SR calculation
 
-# Disclaimer
+### Disclaimer
 
 This project is still in its early stage and may contain bugs or unexpected behavior. Feel free to report them if you encounter any.
