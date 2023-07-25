@@ -55,30 +55,35 @@ function Ticker(interval) {
                     })
             }
             else {
-                osuParser.read(`http://${location.host}/Songs/${utils.escape(live.original.menu.bm.path.folder)}/${utils.escape(live.original.menu.bm.path.file)}`)
-                    .then((res) => {
-                        if (res.metadata.bid != live.metadata.bid) return;
-                        if (res.beatmap.bpm.min != res.beatmap.bpm.max) elementBPM.innerText = `${live.beatmap.bpm.min}~${live.beatmap.bpm.max} (${res.beatmap.bpm.avg})`;
-                        if (res.beatmap.drain) {
-                            elementLength.innerText = `${utils.formatTime(liveModified.beatmap.length)} (${utils.formatTime(res.beatmap.drain)} drain)`;
-                        }
-                    });
+                // Occasionally when .osu file is browser-cached, these values don't display and won't cause thrown errors either
+                setTimeout(() => {
+                    if (!wasmReady) return;
 
-                if (!wasmReady) return;
+                    fetch(`http://${location.host}/Songs/${utils.escape(live.original.menu.bm.path.folder)}/${utils.escape(live.original.menu.bm.path.file)}`)
+                        .then(resR => {
+                            resR.text()
+                                .then(text => {
+                                    // Since rosu-pp doesn't provide Beatmap ID, delay bpm calculation to ensure not displaying old data
+                                    osuParser.read(`http://${location.host}/Songs/${utils.escape(live.original.menu.bm.path.folder)}/${utils.escape(live.original.menu.bm.path.file)}`)
+                                        .then((res) => {
 
-                fetch(`http://${location.host}/Songs/${utils.escape(live.original.menu.bm.path.folder)}/${utils.escape(live.original.menu.bm.path.file)}`)
-                    .then(res => {
-                        res.text()
-                            .then(text => {
-                                if(DEBUG) console.log(`[SRCalculator]read ${text.length} bytes, calculating with mod enum ${live.beatmap.mods}`);
-                                text.trim();
-                                let u8arr = new TextEncoder().encode(text);
+                                            if (res.metadata.bid != live.metadata.bid) return;
 
-                                let sr = calculate_sr(u8arr, live.beatmap.mods);
-
-                                elementSR.innerText = `${utils.roundNumber(sr, 2)} (${live.difficulty.sr} local)`;
-                            });
-                    });
+                                            if (res.beatmap.bpm.min != res.beatmap.bpm.max) elementBPM.innerText = `${live.beatmap.bpm.min}~${live.beatmap.bpm.max} (${res.beatmap.bpm.avg})`;
+                                            if (res.beatmap.drain) {
+                                                elementLength.innerText = `${utils.formatTime(liveModified.beatmap.length)} (${utils.formatTime(res.beatmap.drain)} drain)`;
+                                            }
+                                        });
+                                    if (DEBUG) console.log(`[SRCalculator]read ${text.length} bytes, calculating with mod enum ${live.beatmap.mods}`);
+                                    text = text.trim();
+                                    let u8arr = new TextEncoder().encode(text);
+                                    let sr = calculate_sr(u8arr, live.beatmap.mods);
+                                    if (sr > -1) {
+                                        elementSR.innerText = `${utils.roundNumber(sr, 2)} (${live.difficulty.sr} local)`;
+                                    }
+                                });
+                        });
+                }, 100);
             }
         }
     }
