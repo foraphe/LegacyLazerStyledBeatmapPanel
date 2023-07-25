@@ -55,7 +55,7 @@ function Ticker(interval) {
                     })
             }
             else {
-                osuParser.read(`http://${location.host}/Songs/${utils.escape(live.original.menu.bm.path.folder)}/${live.original.menu.bm.path.file}`)
+                osuParser.read(`http://${location.host}/Songs/${utils.escape(live.original.menu.bm.path.folder)}/${utils.escape(live.original.menu.bm.path.file)}`)
                     .then((res) => {
                         if (res.metadata.bid != live.metadata.bid) return;
                         if (res.beatmap.bpm.min != res.beatmap.bpm.max) elementBPM.innerText = `${live.beatmap.bpm.min}~${live.beatmap.bpm.max} (${res.beatmap.bpm.avg})`;
@@ -66,7 +66,7 @@ function Ticker(interval) {
 
                 if (!wasmReady) return;
 
-                fetch(`http://${location.host}/Songs/${utils.escape(live.original.menu.bm.path.folder)}/${live.original.menu.bm.path.file}`)
+                fetch(`http://${location.host}/Songs/${utils.escape(live.original.menu.bm.path.folder)}/${utils.escape(live.original.menu.bm.path.file)}`)
                     .then(res => {
                         res.text()
                             .then(text => {
