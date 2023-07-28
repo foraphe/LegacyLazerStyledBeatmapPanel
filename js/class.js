@@ -83,7 +83,7 @@ function Ticker(interval) {
                                     }
                                 });
                         });
-                }, 100);
+                }, 500);
             }
         }
     }
