@@ -32,10 +32,33 @@ function Beatmap() {
 }
 
 function Ticker(interval) {
+    oldExpanded = config.EXPANDED;
     this.run = function () {
         return setInterval(this.doTick, interval);
     }
     this.doTick = function () {
+        if (config.EXPANDED != oldExpanded) {
+            oldExpanded = config.EXPANDED;
+            if (config.EXPANDED) {
+                document.getElementById('outerPanel').classList.replace('outerPanel-retracted', 'outerPanel-expanded');
+                document.getElementById('innerPanel').classList.replace('innerPanel-retracted', 'innerPanel-expanded');
+                document.getElementById('dataBeatmapInfo').classList.replace('dataBeatmapInfo-retracted', 'dataBeatmapInfo-expanded');
+                document.getElementById('coverBeatmapInfo').classList.replace('coverBeatmapInfo-retracted', 'coverBeatmapInfo-expanded');
+                document.getElementsByClassName('left')[0].classList.replace('hidden', 'display');
+                document.getElementsByClassName('right')[0].classList.replace('hidden', 'display');
+                document.getElementById('osuLogo').classList.replace('hidden', 'display');
+
+            }
+            else {
+                document.getElementById('outerPanel').classList.replace('outerPanel-expanded', 'outerPanel-retracted');
+                document.getElementById('innerPanel').classList.replace('innerPanel-expanded', 'innerPanel-retracted');
+                document.getElementById('dataBeatmapInfo').classList.replace('dataBeatmapInfo-expanded', 'dataBeatmapInfo-retracted');
+                document.getElementById('coverBeatmapInfo').classList.replace('coverBeatmapInfo-expanded', 'coverBeatmapInfo-retracted');
+                document.getElementsByClassName('left')[0].classList.replace('display', 'hidden');
+                document.getElementsByClassName('right')[0].classList.replace('display', 'hidden');
+                document.getElementById('osuLogo').classList.replace('display', 'hidden');
+            }
+        }
         if (flagMapChanged || flagModChanged) {
             if (DEBUG) console.log(`[main] ${flagMapChanged ? 'map' : 'mod'} has changed!`);
             flagMapChanged = false;

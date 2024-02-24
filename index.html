@@ -5,9 +5,9 @@
 </head>
 
 <body style="background-image: none;">
-    <div id="outerPanel" class="roundedBorder">
-        <div id="innerPanel" class="roundedBorder">
-            <div id="dataBeatmapInfo" class="roundedBorder">
+    <div id="outerPanel" class="roundedBorder outerPanel-expanded">
+        <div id="innerPanel" class="roundedBorder innerPanel-expanded">
+            <div id="dataBeatmapInfo" class="roundedBorder dataBeatmapInfo-expanded">
                 <div id="osuSpriteText">
                     <div id="dataBeatmap">-</div>
                     <div class="lineWrapper center">
@@ -21,9 +21,9 @@
                         </div>
                     </div>
                 </div>
-                <div id="coverBeatmapInfo" class="roundedBorder transit"></div>
+                <div id="coverBeatmapInfo" class="roundedBorder transit coverBeatmapInfo-expanded"></div>
             </div>
-            <div class="beatmapInfo left">
+            <div class="beatmapInfo left display">
                 <div class="lineWrapper">
                     <div class="textHeading">Length&nbsp;</div>
                     <div class="textContent open" id="dataLength">-</div>
@@ -33,7 +33,7 @@
                     <div class="textContent open" id="dataBpm">-</div>
                 </div>
             </div>
-            <div class="beatmapInfo right">
+            <div class="beatmapInfo right display">
                 <div class="lineWrapper">
                     <div class="textHeading">CS&nbsp;</div>
                     <div class="textContent open" id="dataCs">0</div>&nbsp;
@@ -49,7 +49,7 @@
             </div>
         </div>
         <div id="logoContainer">
-            <img src="img/osulogo.svg" id="osuLogo"></img>
+            <img src="img/osulogo.svg" id="osuLogo" class="display"></img>
         </div>
     </div>
     <link href="css/style.css" rel="stylesheet" />
