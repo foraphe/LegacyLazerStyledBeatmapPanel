@@ -70,9 +70,11 @@ var gosumemoryUpdater = new Object({
                     elementSR.innerText = data.menu.bm.stats.fullSR;
                     utils.resetAnimation(elementSR, 'open');
                 }
-                if (data.menu.bm.time.mp3 != live.beatmap.length || flagModChanged) {
-                    live.beatmap.length = data.menu.bm.time.mp3;
-                    liveModified.beatmap.length = utils.getModdedTime(data.menu.bm.time.mp3, data.menu.mods.num);
+                if (data.menu.bm.time.full != live.beatmap.length || flagModChanged) {
+                    // TODO. menu.bm.time.mp3 is 0 for some beatmaps, so we fall back to the deprecated menu.bm.time.full even if it doesn't match in-game time displayed (**either**)
+                    // I'll probably try using .osu file for this in the future
+                    live.beatmap.length = data.menu.bm.time.full;
+                    liveModified.beatmap.length = utils.getModdedTime(data.menu.bm.time.full, data.menu.mods.num);
                     elementLength.innerText = utils.formatTime(liveModified.beatmap.length);
                     utils.resetAnimation(elementLength, 'open');
                 }
