@@ -78,7 +78,7 @@ function Ticker(interval) {
                     })
             }
             else {
-                // Occasionally when .osu file is browser-cached, these values don't display and won't cause thrown errors either
+                // TODO. Occasionally when .osu file is browser-cached, these values don't display and won't cause thrown errors either, so adding a delay here
                 setTimeout(() => {
                     if (!wasmReady) return;
 
@@ -94,13 +94,15 @@ function Ticker(interval) {
 
                                             if (res.beatmap.bpm.min != res.beatmap.bpm.max) elementBPM.innerText = `${live.beatmap.bpm.min}~${live.beatmap.bpm.max} (${res.beatmap.bpm.avg})`;
                                             if (res.beatmap.drain) {
-                                                elementLength.innerText = `${utils.formatTime(liveModified.beatmap.length)} (${utils.formatTime(res.beatmap.drain)} drain)`;
+                                                // TODO. liveModified should have actual mod enum, like live do, but it doesn't, temporary fix for modded drain time here.
+                                                elementLength.innerText = `${utils.formatTime(liveModified.beatmap.length)} (${utils.formatTime(utils.getModdedTime(res.beatmap.drain, live.beatmap.mods))} drain)`;
                                             }
                                         });
-                                    if (DEBUG) console.log(`[SRCalculator]read ${text.length} bytes, calculating with mod enum ${live.beatmap.mods}`);
+                                    if (DEBUG) console.log(`[SRCalculator] read ${text.length} bytes, calculating with mod enum ${live.beatmap.mods}`);
                                     text = text.trim();
                                     let u8arr = new TextEncoder().encode(text);
                                     let sr = calculate_sr(u8arr, live.beatmap.mods);
+                                    if (DEBUG) console.log(`[SRCalculator] SR calculated: ${sr}`);
                                     if (sr > -1) {
                                         elementSR.innerText = `${utils.roundNumber(sr, 2)} (${live.difficulty.sr} local)`;
                                     }
