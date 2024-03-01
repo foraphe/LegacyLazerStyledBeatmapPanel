@@ -47,7 +47,7 @@ function Ticker(interval) {
                 document.getElementsByClassName('left')[0].classList.replace('hidden', 'display');
                 document.getElementsByClassName('right')[0].classList.replace('hidden', 'display');
                 document.getElementById('osuLogo').classList.replace('hidden', 'display');
-
+                dataMapper.classList.replace('textContent-retracted', 'textContent-expanded');
             }
             else {
                 document.getElementById('outerPanel').classList.replace('outerPanel-expanded', 'outerPanel-retracted');
@@ -57,6 +57,7 @@ function Ticker(interval) {
                 document.getElementsByClassName('left')[0].classList.replace('display', 'hidden');
                 document.getElementsByClassName('right')[0].classList.replace('display', 'hidden');
                 document.getElementById('osuLogo').classList.replace('display', 'hidden');
+                dataMapper.classList.replace('textContent-expanded', 'textContent-retracted')
             }
         }
         if (flagMapChanged || flagModChanged) {

@@ -221,6 +221,10 @@ body {
     left: 30vw;
 }
 
+#osuSpriteText .textContent-expanded {
+    max-width: 22vw;
+}
+
 .display {
     display: block;
 }
@@ -248,4 +252,8 @@ body {
 .coverBeatmapInfo-retracted {
     width:25vw;
     left:37.5vw;
+}
+
+#osuSpriteText .textContent-retracted {
+    max-width: 13.75vw;
 }
