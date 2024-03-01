@@ -105,7 +105,6 @@ body {
     font-size: inherit;
     font-family: "Exo 2 Bold Italic";
     margin-right: 2.5vh;
-    max-width: 22vw;
 }
 
 #innerPanel .beatmapInfo {
@@ -255,5 +254,5 @@ body {
 }
 
 #osuSpriteText .textContent-retracted {
-    max-width: 13.75vw;
+    max-width: 10vw;
 }

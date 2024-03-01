@@ -48,7 +48,7 @@ function Ticker(interval) {
                 document.getElementById('innerPanel').classList.replace('innerPanel-retracted', 'innerPanel-expanded');
                 document.getElementById('dataBeatmapInfo').classList.replace('dataBeatmapInfo-retracted', 'dataBeatmapInfo-expanded');
                 document.getElementById('coverBeatmapInfo').classList.replace('coverBeatmapInfo-retracted', 'coverBeatmapInfo-expanded');
-                dataMapper.classList.replace('textContent-retracted', 'textContent-expanded');
+                dataDifficulty.classList.replace('textContent-retracted', 'textContent-expanded');
                 expandTimeout = setTimeout(() => {
                     document.getElementsByClassName('left')[0].classList.replace('hidden', 'display');
                     document.getElementsByClassName('right')[0].classList.replace('hidden', 'display');
@@ -64,7 +64,7 @@ function Ticker(interval) {
                 document.getElementById('innerPanel').classList.replace('innerPanel-expanded', 'innerPanel-retracted');
                 document.getElementById('dataBeatmapInfo').classList.replace('dataBeatmapInfo-expanded', 'dataBeatmapInfo-retracted');
                 document.getElementById('coverBeatmapInfo').classList.replace('coverBeatmapInfo-expanded', 'coverBeatmapInfo-retracted');
-                dataMapper.classList.replace('textContent-expanded', 'textContent-retracted');
+                dataDifficulty.classList.replace('textContent-expanded', 'textContent-retracted');
                 document.getElementsByClassName('left')[0].classList.replace('display', 'hidden');
                 document.getElementsByClassName('right')[0].classList.replace('display', 'hidden');
                 document.getElementById('osuLogo').classList.replace('display', 'hidden');
