@@ -104,7 +104,7 @@ function Ticker(interval) {
                                     let sr = calculate_sr(u8arr, live.beatmap.mods);
                                     if (DEBUG) console.log(`[SRCalculator] SR calculated: ${sr}`);
                                     if (sr > -1) {
-                                        elementSR.innerText = `${utils.roundNumber(sr, 2)} (${live.difficulty.sr} local)`;
+                                        elementSR.innerText = `${utils.roundNumber(sr, 2)} (${live.difficulty.sr} legacy)`;
                                     }
                                 });
                         });
