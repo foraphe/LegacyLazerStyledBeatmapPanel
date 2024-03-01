@@ -33,6 +33,7 @@ function Beatmap() {
 
 function Ticker(interval) {
     oldExpanded = config.EXPANDED;
+    expandTimeout = null;
     this.run = function () {
         return setInterval(this.doTick, interval);
     }
@@ -40,24 +41,33 @@ function Ticker(interval) {
         if (config.EXPANDED != oldExpanded) {
             oldExpanded = config.EXPANDED;
             if (config.EXPANDED) {
+                if(expandTimeout) {
+                    expandTimeout = null;
+                }
                 document.getElementById('outerPanel').classList.replace('outerPanel-retracted', 'outerPanel-expanded');
                 document.getElementById('innerPanel').classList.replace('innerPanel-retracted', 'innerPanel-expanded');
                 document.getElementById('dataBeatmapInfo').classList.replace('dataBeatmapInfo-retracted', 'dataBeatmapInfo-expanded');
                 document.getElementById('coverBeatmapInfo').classList.replace('coverBeatmapInfo-retracted', 'coverBeatmapInfo-expanded');
-                document.getElementsByClassName('left')[0].classList.replace('hidden', 'display');
-                document.getElementsByClassName('right')[0].classList.replace('hidden', 'display');
-                document.getElementById('osuLogo').classList.replace('hidden', 'display');
                 dataMapper.classList.replace('textContent-retracted', 'textContent-expanded');
+                expandTimeout = setTimeout(() => {
+                    document.getElementsByClassName('left')[0].classList.replace('hidden', 'display');
+                    document.getElementsByClassName('right')[0].classList.replace('hidden', 'display');
+                    document.getElementById('osuLogo').classList.replace('hidden', 'display');
+                }, 200)
             }
             else {
+                if(expandTimeout) {
+                    clearTimeout(expandTimeout);
+                    expandTimeout = null;
+                }
                 document.getElementById('outerPanel').classList.replace('outerPanel-expanded', 'outerPanel-retracted');
                 document.getElementById('innerPanel').classList.replace('innerPanel-expanded', 'innerPanel-retracted');
                 document.getElementById('dataBeatmapInfo').classList.replace('dataBeatmapInfo-expanded', 'dataBeatmapInfo-retracted');
                 document.getElementById('coverBeatmapInfo').classList.replace('coverBeatmapInfo-expanded', 'coverBeatmapInfo-retracted');
+                dataMapper.classList.replace('textContent-expanded', 'textContent-retracted');
                 document.getElementsByClassName('left')[0].classList.replace('display', 'hidden');
                 document.getElementsByClassName('right')[0].classList.replace('display', 'hidden');
                 document.getElementById('osuLogo').classList.replace('display', 'hidden');
-                dataMapper.classList.replace('textContent-expanded', 'textContent-retracted')
             }
         }
         if (flagMapChanged || flagModChanged) {
