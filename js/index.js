@@ -36,17 +36,6 @@ let elementSR = document.getElementById('dataSr');
 let elementBM = document.getElementById('dataBeatmap');
 let elementBGCover = document.getElementById('coverBeatmapInfo');
 
-//TODO: put the styles into appropriate css entries and update classList instead
-if (!config.EXPANDED) {
-    document.getElementById('outerPanel').style = 'width:25vw;left:37.5vw;';
-    document.getElementById('innerPanel').style = 'width:25vw;left:0;';
-    document.getElementById('dataBeatmapInfo').style = 'width:25vw;left:0;border:0.125vh solid white';
-    document.getElementById('coverBeatmapInfo').style = 'width:25vw;left:0;';
-    document.getElementsByClassName('left')[0].style = 'display:none;';
-    document.getElementsByClassName('right')[0].style = 'display:none;';
-    document.getElementById('osuLogo').style = 'display:none;';
-}
-
 let live = new Beatmap();
 let liveModified = new Beatmap();
 let ticker = new Ticker(100);

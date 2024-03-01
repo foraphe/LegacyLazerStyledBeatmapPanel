@@ -32,10 +32,44 @@ function Beatmap() {
 }
 
 function Ticker(interval) {
+    oldExpanded = config.EXPANDED;
+    expandTimeout = null;
     this.run = function () {
         return setInterval(this.doTick, interval);
     }
     this.doTick = function () {
+        if (config.EXPANDED != oldExpanded) {
+            oldExpanded = config.EXPANDED;
+            if (config.EXPANDED) {
+                if(expandTimeout) {
+                    expandTimeout = null;
+                }
+                document.getElementById('outerPanel').classList.replace('outerPanel-retracted', 'outerPanel-expanded');
+                document.getElementById('innerPanel').classList.replace('innerPanel-retracted', 'innerPanel-expanded');
+                document.getElementById('dataBeatmapInfo').classList.replace('dataBeatmapInfo-retracted', 'dataBeatmapInfo-expanded');
+                document.getElementById('coverBeatmapInfo').classList.replace('coverBeatmapInfo-retracted', 'coverBeatmapInfo-expanded');
+                dataDifficulty.classList.replace('textContent-retracted', 'textContent-expanded');
+                expandTimeout = setTimeout(() => {
+                    document.getElementsByClassName('left')[0].classList.replace('hidden', 'display');
+                    document.getElementsByClassName('right')[0].classList.replace('hidden', 'display');
+                    document.getElementById('osuLogo').classList.replace('hidden', 'display');
+                }, 200)
+            }
+            else {
+                if(expandTimeout) {
+                    clearTimeout(expandTimeout);
+                    expandTimeout = null;
+                }
+                document.getElementById('outerPanel').classList.replace('outerPanel-expanded', 'outerPanel-retracted');
+                document.getElementById('innerPanel').classList.replace('innerPanel-expanded', 'innerPanel-retracted');
+                document.getElementById('dataBeatmapInfo').classList.replace('dataBeatmapInfo-expanded', 'dataBeatmapInfo-retracted');
+                document.getElementById('coverBeatmapInfo').classList.replace('coverBeatmapInfo-expanded', 'coverBeatmapInfo-retracted');
+                dataDifficulty.classList.replace('textContent-expanded', 'textContent-retracted');
+                document.getElementsByClassName('left')[0].classList.replace('display', 'hidden');
+                document.getElementsByClassName('right')[0].classList.replace('display', 'hidden');
+                document.getElementById('osuLogo').classList.replace('display', 'hidden');
+            }
+        }
         if (flagMapChanged || flagModChanged) {
             if (DEBUG) console.log(`[main] ${flagMapChanged ? 'map' : 'mod'} has changed!`);
             flagMapChanged = false;
@@ -55,7 +89,7 @@ function Ticker(interval) {
                     })
             }
             else {
-                // Occasionally when .osu file is browser-cached, these values don't display and won't cause thrown errors either
+                // TODO. Occasionally when .osu file is browser-cached, these values don't display and won't cause thrown errors either, so adding a delay here
                 setTimeout(() => {
                     if (!wasmReady) return;
 
@@ -71,15 +105,17 @@ function Ticker(interval) {
 
                                             if (res.beatmap.bpm.min != res.beatmap.bpm.max) elementBPM.innerText = `${live.beatmap.bpm.min}~${live.beatmap.bpm.max} (${res.beatmap.bpm.avg})`;
                                             if (res.beatmap.drain) {
-                                                elementLength.innerText = `${utils.formatTime(liveModified.beatmap.length)} (${utils.formatTime(res.beatmap.drain)} drain)`;
+                                                // TODO. liveModified should have actual mod enum, like live do, but it doesn't, temporary fix for modded drain time here.
+                                                elementLength.innerText = `${utils.formatTime(liveModified.beatmap.length)} (${utils.formatTime(utils.getModdedTime(res.beatmap.drain, live.beatmap.mods))} drain)`;
                                             }
                                         });
-                                    if (DEBUG) console.log(`[SRCalculator]read ${text.length} bytes, calculating with mod enum ${live.beatmap.mods}`);
+                                    if (DEBUG) console.log(`[SRCalculator] read ${text.length} bytes, calculating with mod enum ${live.beatmap.mods}`);
                                     text = text.trim();
                                     let u8arr = new TextEncoder().encode(text);
                                     let sr = calculate_sr(u8arr, live.beatmap.mods);
+                                    if (DEBUG) console.log(`[SRCalculator] SR calculated: ${sr}`);
                                     if (sr > -1) {
-                                        elementSR.innerText = `${utils.roundNumber(sr, 2)} (${live.difficulty.sr} local)`;
+                                        elementSR.innerText = `${utils.roundNumber(sr, 2)} (${live.difficulty.sr} legacy)`;
                                     }
                                 });
                         });
