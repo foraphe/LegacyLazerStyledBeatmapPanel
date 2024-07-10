@@ -37,7 +37,7 @@ let osuParser = {
             },
             beatmap: {
                 mode: content.Mode,
-                bpm: this.getBPM(content.timings) || { min: -1, max: -1, avg: -1 },
+                bpm: this.getBPM(content.timings, Number(content.objs[0][2]), Number(content.objs[content.objs.length - 1][2])) || { min: -1, max: -1, avg: -1 },
                 length: this.getTotalTime(content) || -1,
                 drain: this.getDrainTime(content) || -1,
                 mods: -1,
@@ -121,11 +121,11 @@ let osuParser = {
         this.state = this.states.indexOf(section.toLowerCase());
     },
 
-    getBPM: function (timings) {
+    getBPM(timings, begin, end) {
         let bpm = {
             min: 2e9,
             max: -1,
-            avg: -1,
+            mostly: -1,
         };
 
         let bpmList = {},
@@ -133,18 +133,27 @@ let osuParser = {
 
         for (let i of timings) {
             if (i[1] > '0') {
-                if (lastBPM) {
+                if (lastBPM && lastBPM > 0) {
                     if (!bpmList[lastBPM]) bpmList[lastBPM] = 0;
                     bpmList[lastBPM] += Number(i[0]) - lastBegin;
                 }
-                let currentBPM = lastBPM = utils.roundNumber(60000 / Number(i[1]), 2);
+                let currentBPM = lastBPM = this.round(60000 / Number(i[1]), 2);
                 if (currentBPM < bpm.min) bpm.min = currentBPM;
                 if (currentBPM > bpm.max) bpm.max = currentBPM;
                 lastBegin = Number(i[0]);
             }
         }
+        if (lastBPM && lastBPM > 0) {
+            if (!bpmList[lastBPM]) bpmList[lastBPM] = 0;
+            bpmList[lastBPM] += end - lastBegin;
+        }
         if (bpm.min == 2e9) bpm.min = -1;
-        bpm.avg = Object.keys(bpmList).reduce((a, b) => bpmList[a] > bpmList[b] ? a : b);
+        if (bpm.max === bpm.min) {
+            bpm.mostly = bpm.max;
+        }
+        else {
+            bpm.mostly = Number(Object.keys(bpmList).reduce((a, b) => bpmList[a] > bpmList[b] ? a : b));
+        }
         return bpm;
     },
 
