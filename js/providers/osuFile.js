@@ -157,22 +157,33 @@ let osuParser = {
         return bpm;
     },
 
+    lastObjectIsSpinner: function (content) {
+        return (content.objs[content.objs.length - 1][3] & 8) == 8;
+    },
+
     getTotalTime: function (content) {
-        let first = Number(content.objs[0][2]) || 0, last = Number(content.objs[content.objs.length - 1][2]);
-        if (DEBUG) console.log(`[osuFileParser] hit objects begin at ${first}, end at ${last}, total time ${last - first}`);
-        return last - first;
+        // If the last hit object is a spinner, its length will be included in in-game length but not length displayed on osu! website. 
+        // If it's a slider, its length won't be included at both places.
+        // I decide it's better to be coherent with in-game length.
+        let first = Number(content.timings[0][0]) || 0, last = this.lastObjectIsSpinner(content) ? Number(content.objs[content.objs.length - 1][5]) : Number(content.objs[content.objs.length - 1][2]);
+        if (DEBUG) console.log(`[osuFileParser] Timing point begin at ${first}, hit objects end at ${last}, isSpinner=${this.lastObjectIsSpinner(content)}, total time ${last}`);
+        return last;
     },
 
     getDrainTime: function (content) {
         let breakLength = 0;
         for (let line of content.events) {
-            if (line[0] == '2' || line[0].toLowerCase == 'break') {
+            if (line[0] == '2' || line[0].toLowerCase() == 'break') {
                 breakLength += Number(line[2]) - Number(line[1]);
             }
         }
-        if (DEBUG) console.log(`[osuFileParser] total break time length: ${breakLength}`)
+        // For drain time, the begin time of the last hit object is used regardless of its type.
+        // Due to the inconsistency explained above, drain time becomes a little complicated.
+        let spinnerLengthIfLastObjectIsSpinner = this.lastObjectIsSpinner(content) ? Number(content.objs[content.objs.length - 1][5]) - Number(content.objs[content.objs.length - 1][2]) : 0;
 
-        return this.getTotalTime(content) - breakLength;
+        if (DEBUG) console.log(`[osuFileParser] total break time length: ${breakLength}, last spinner length: ${spinnerLengthIfLastObjectIsSpinner}`);
+
+        return this.getTotalTime(content) - breakLength - Number(content.objs[0][2]) - spinnerLengthIfLastObjectIsSpinner;
     },
 
     read: async function (addr) {
