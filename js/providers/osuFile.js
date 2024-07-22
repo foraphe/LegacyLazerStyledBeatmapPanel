@@ -137,7 +137,7 @@ let osuParser = {
                     if (!bpmList[lastBPM]) bpmList[lastBPM] = 0;
                     bpmList[lastBPM] += Number(i[0]) - lastBegin;
                 }
-                let currentBPM = lastBPM = this.round(60000 / Number(i[1]), 2);
+                let currentBPM = lastBPM = utils.roundNumber(60000 / Number(i[1]), 2);
                 if (currentBPM < bpm.min) bpm.min = currentBPM;
                 if (currentBPM > bpm.max) bpm.max = currentBPM;
                 lastBegin = Number(i[0]);
