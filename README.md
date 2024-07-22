@@ -5,7 +5,7 @@ A old lazer styled osu! beatmap info panel to use with [gosumemory](https://gith
 Add the folder to `static` folder in gosumemory directory, then refer to [gosumemory](https://github.com/l3lackShark/gosumemory)'s README for usage.
 **Currently supports STD only**.
 
-If an API v1 key is provided via URL parameters (see below), the panel will try to look up for some information (drain time, online SR, etc.) from osu! API. If not, these values will be calculated locally using the beatmap's `.osu` file. The local calculation of Online SR is implemented using a wasm version of [rosu-pp](https://github.com/MaxOhn/rosu-pp) (commit `68050f7`). Check `rosu-pp.patch` in the repo for details.
+If an API v1 key is provided via URL parameters (see below), the panel will try to look up for some information (drain time, online SR, etc.) from osu! API. If not, these values will be calculated locally using the beatmap's `.osu` file. The local calculation of Online SR is implemented using a wasm version of [rosu-pp](https://github.com/MaxOhn/rosu-pp) (see [this fork](https://github.com/foraphe/rosu-pp-wasm)).
 
 ### URL Parameters
 
